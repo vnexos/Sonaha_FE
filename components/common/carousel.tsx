@@ -18,7 +18,7 @@ interface CarouselProps {
   images: CarouselImage[];
 }
 
-export default function Carousel({ images }: CarouselProps) {
+export default function Carousel({ images }: Readonly<CarouselProps>) {
   const [index, setIndex] = useState(0);
   const [autoSlide, setAutoSlide] = useState<NodeJS.Timeout>();
   const [touchStart, setTouchStart] = useState(0);

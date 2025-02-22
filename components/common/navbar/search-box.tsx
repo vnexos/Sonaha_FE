@@ -18,7 +18,7 @@ interface SearchBoxProps {
   isForMobile?: boolean;
 }
 
-function SearchBox({ isForMobile = false }: SearchBoxProps) {
+function SearchBox({ isForMobile = false }: Readonly<SearchBoxProps>) {
   const searchRef = useRef<HTMLInputElement>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isHovered, setIsHovered] = useState(false);
