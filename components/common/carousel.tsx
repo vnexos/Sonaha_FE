@@ -7,6 +7,7 @@ import { Icon } from "@iconify/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export interface CarouselImage {
+  id: number;
   url: string;
   name: string;
   title: string;

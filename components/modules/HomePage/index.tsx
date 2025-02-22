@@ -4,6 +4,7 @@ import Carousel, { CarouselImage } from "@/components/common/carousel";
 
 const carouselImage: CarouselImage[] = [
   {
+    id: 1,
     url: "/slide1.png",
     fallbackUrl: "/slide1-low.png",
     title: "Chất lượng",
@@ -11,6 +12,7 @@ const carouselImage: CarouselImage[] = [
     des: "Chúng tôi mang đến sự chất lượng tốt nhất.",
   },
   {
+    id: 2,
     url: "/slide2.png",
     fallbackUrl: "/slide2-low.png",
     title: "Lòng tin",
@@ -18,6 +20,7 @@ const carouselImage: CarouselImage[] = [
     des: "Chúng tôi làm việc dựa trên lòng tin của bạn.",
   },
   {
+    id: 3,
     url: "/slide3.png",
     fallbackUrl: "/slide3-low.png",
     title: "Nền tảng",
