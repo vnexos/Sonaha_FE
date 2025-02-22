@@ -76,7 +76,7 @@ export default function Carousel({ images }: Readonly<CarouselProps>) {
     >
       {images.map((img, i) => (
         <div
-          key={i}
+          key={img.id}
           className={`absolute inset-0 h-full transition-transform duration-700 ease-in-out ${
             i === index ? "translate-x-0" : "translate-x-full"
           }`}
