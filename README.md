@@ -60,5 +60,5 @@ export const { useGetAllStudentsQuery } = studentsEndpoint; // Nếu là mutatio
 - Cách dùng ở module: (Chưa cập nhật)
 ## Cách làm việc chung
 - Push lên Github ở một nhánh riêng
-- Tạo pull request tới nhánh development
+- Tạo pull request tới nhánh `development`
 - Check sonar trên PR mới tạo
