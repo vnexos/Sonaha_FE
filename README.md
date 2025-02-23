@@ -5,6 +5,12 @@
 - ~~NextUI~~ HeroUI: https://www.heroui.com/docs
 - Tailwind: https://tailwindcss.com/
 - Redux Toolkit: https://redux-toolkit.js.org/introduction/getting-started
+## Extensions cần thiết
+- ES7 Snippets: https://marketplace.visualstudio.com/items?itemName=rodrigovallades.es7-react-js-snippets
+- ESLint: https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
+- Material Icon Theme (tùy): https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme
+- Simple React Snippets: https://marketplace.visualstudio.com/items?itemName=burkeholland.simple-react-snippets
+- Tailwind CSS IntelliSense: https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss
 ## How to code
 ### Router
 
