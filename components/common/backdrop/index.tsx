@@ -7,6 +7,7 @@ import {
   SetStateAction,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
@@ -28,8 +29,17 @@ export function BackdropProvider({
     else document.body.style.overflow = "auto";
   }, [showBackdrop]);
 
+  const backdrop = useMemo(
+    () =>
+      [showBackdrop, setShowBackdrop] as [
+        boolean,
+        Dispatch<SetStateAction<boolean>>,
+      ],
+    [showBackdrop, setShowBackdrop],
+  );
+
   return (
-    <BackdropContext.Provider value={[showBackdrop, setShowBackdrop]}>
+    <BackdropContext.Provider value={backdrop}>
       {/* <div
         className={cn(
           showBackdrop[0] || "hidden",
