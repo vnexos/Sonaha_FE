@@ -5,20 +5,16 @@ export const siteConfig = {
   description: "Bất động sản Sonaha",
   navItems: [
     {
-      label: "Docs",
-      href: "/docs",
+      label: "Dự án",
+      href: "/dự-án",
     },
     {
-      label: "Pricing",
-      href: "/pricing",
+      label: "Giới thiệu",
+      href: "/giới-thiệu",
     },
     {
-      label: "Blog",
-      href: "/blog",
-    },
-    {
-      label: "About",
-      href: "/about",
+      label: "Quyền lợi",
+      href: "/quyền-lợi",
     },
   ],
   links: {

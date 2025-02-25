@@ -77,7 +77,7 @@ export default function Carousel({ images }: Readonly<CarouselProps>) {
       {images.map((img, i) => (
         <div
           key={img.id}
-          className={`absolute inset-0 h-full transition-transform duration-700 ease-in-out ${
+          className={`absolute inset-0 h-full transition-transform duration-700 ease-in-out z-0 ${
             i === index ? "translate-x-0" : "translate-x-full"
           }`}
         >
@@ -85,7 +85,7 @@ export default function Carousel({ images }: Readonly<CarouselProps>) {
             alt={img.name}
             classNames={{
               img: cn(
-                "pointer-events-none !object-cover -mb-[100%] w-[100vw] h-[40vh] sm:h-[75vh] rounded-none",
+                "pointer-events-none !object-cover -mb-[100%] w-[100vw] h-[40vh] sm:h-[75vh] rounded-none z-0",
                 { div: "rounded-none" },
               ),
               blurredImg: "rounded-none",
@@ -93,7 +93,7 @@ export default function Carousel({ images }: Readonly<CarouselProps>) {
             fallbackSrc={img.fallbackUrl}
             src={img.url}
           />
-          <div className="absolute bottom-10 left-10 bg-[#ffffff7f] bg-opacity-50 p-4 rounded-xl text-white sm:block hidden z-10 backdrop-blur-md">
+          <div className="absolute bottom-10 left-10 bg-[#ffffff7f] bg-opacity-50 p-4 rounded-xl text-white sm:block hidden z-[1] backdrop-blur-md">
             <h2 className="text-xl font-bold text-black">{img.title}</h2>
             <p className="text-sm text-black">{img.des}</p>
           </div>
@@ -101,7 +101,7 @@ export default function Carousel({ images }: Readonly<CarouselProps>) {
       ))}
 
       <div
-        className="absolute inset-0 flex justify-between items-center px-6 z-10"
+        className="absolute inset-0 flex justify-between items-center px-6 z-0"
         onTouchEnd={handleTouchEnd}
         onTouchMove={handleTouchMove}
         onTouchStart={handleTouchStart}

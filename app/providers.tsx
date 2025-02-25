@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import * as React from "react";
 import { Provider } from "react-redux";
 
+import { BackdropProvider } from "@/components/common/backdrop";
 import { store } from "@/store";
 
 export interface ProvidersProps {
@@ -31,7 +32,9 @@ export function Providers({ children, themeProps }: Readonly<ProvidersProps>) {
     <HeroUIProvider navigate={router.push}>
       <NextThemesProvider {...themeProps}>
         <ToastProvider />
-        <Provider store={store}>{children}</Provider>
+        <BackdropProvider>
+          <Provider store={store}>{children}</Provider>
+        </BackdropProvider>
       </NextThemesProvider>
     </HeroUIProvider>
   );
