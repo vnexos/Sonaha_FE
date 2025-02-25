@@ -15,7 +15,6 @@ import NextLink from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { useBackdrop } from "../backdrop";
 import LoginButton from "../login";
 
 import Logo from "./logo";
@@ -27,7 +26,6 @@ export const Navbar = () => {
   const pathname = usePathname();
 
   const [scrollPosition, setScrollPosition] = useState(0);
-  const [backdrop, setBackdrop] = useBackdrop();
 
   useEffect(() => {
     const handleScroll = () => {

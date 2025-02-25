@@ -14,20 +14,22 @@ interface BackdropProviderProps {
   children: ReactNode;
 }
 
-var BackdropContext = createContext<
+const BackdropContext = createContext<
   [boolean, Dispatch<SetStateAction<boolean>>]
 >([false, () => {}]);
 
-export function BackdropProvider({ children }: BackdropProviderProps) {
-  const showBackdrop = useState<boolean>(false);
+export function BackdropProvider({
+  children,
+}: Readonly<BackdropProviderProps>) {
+  const [showBackdrop, setShowBackdrop] = useState<boolean>(false);
 
   useEffect(() => {
-    if (showBackdrop[0]) document.body.style.overflow = "hidden";
+    if (showBackdrop) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "auto";
-  }, [showBackdrop[0]]);
+  }, [showBackdrop]);
 
   return (
-    <BackdropContext.Provider value={showBackdrop}>
+    <BackdropContext.Provider value={[showBackdrop, setShowBackdrop]}>
       {/* <div
         className={cn(
           showBackdrop[0] || "hidden",
