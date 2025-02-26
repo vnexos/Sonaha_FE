@@ -9,7 +9,15 @@ export const propritiesApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    createProprity: builder.mutation<any, { name: string; location: string }>({
+      query: (newProprity) => ({
+        url: propritiesEndpoint.CreateProperti, // Thêm đường dẫn API phù hợp
+        method: "POST",
+        body: newProprity,
+      }),
+    }),
   }),
+  
 });
 
-export const { useGetPropritiesQuery } = propritiesApi;
+export const { useGetPropritiesQuery , useCreateProprityMutation } = propritiesApi;
