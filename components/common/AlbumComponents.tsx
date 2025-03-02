@@ -11,6 +11,9 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
 
   const handleVideoPlay = () => setIsPlaying(true);
   const handleVideoPause = () => setIsPlaying(false);
+  const videoRegex = /\.(mp4|webm|ogg)$/i;
+
+  const isVideoFile = (fileName: string) => videoRegex.exec(fileName) !== null;
 
   if (
     !propertyImages ||
@@ -30,7 +33,7 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
 
     if (!item) return null;
 
-    const isVideo = item.match(/\.(mp4|webm|ogg)$/i);
+    const isVideo = isVideoFile(item);
 
     return (
       <div className="relative w-full h-96 bg-black rounded-xl overflow-hidden shadow-lg">
@@ -82,7 +85,7 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
       <div className="flex justify-center gap-2 overflow-x-auto pb-4">
         {propertyImages.map((item, index) => (
           <button
-            key="hehe"
+            key={index}
             className={`relative shrink-0 cursor-pointer transition-all duration-200 ${
               index === currentIndex
                 ? "ring-4 ring-blue-500"
@@ -100,7 +103,7 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
                 loading="lazy"
                 src={item}
               />
-              {item.match(/\.(mp4|webm|ogg)$/i) && (
+              {isVideoFile(item) && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/50">
                   <PlayIcon className="w-6 h-6 text-white" />
                 </div>

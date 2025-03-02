@@ -14,7 +14,7 @@ import { cn } from "@heroui/react";
 import { link as linkStyles } from "@heroui/theme";
 import clsx from "clsx";
 import NextLink from "next/link";
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 
 import Logo from "./logo";
 import SearchBox from "./search";
@@ -22,9 +22,6 @@ import SearchBox from "./search";
 import { useGetProvincesQuery } from "@/store/queries/province";
 
 export const Navbar = () => {
-
-  const [isProjectMenuOpen, setProjectMenuOpen] = useState(false); // State cho menu dự án
-  const projectMenuRef = useRef(null); // Tham chiếu đến menu con
 
   const searchInput = (
     <Input
@@ -136,8 +133,6 @@ export const Navbar = () => {
       href: "LuxuryApartment",
     },
   ];
-  const [selectedProvince, setSelectedProvince] = useState<any | null>(null);
-  const [loadingDistrict, setLoadingDistrict] = useState(false);
 
   const { provinceData } = useGetProvincesQuery(null, {
     selectFromResult: (result) => ({
@@ -149,38 +144,13 @@ export const Navbar = () => {
 
   console.log(provinceData);
 
-  useEffect(() => {
-    if (!selectedProvince) return;
-    console.log(selectedProvince);
-    setLoadingDistrict(true);
-  }, [selectedProvince]);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        projectMenuRef.current &&
-        !(projectMenuRef.current as any).contains(event.target as Node)
-      ) {
-        setProjectMenuOpen(false); // Đóng menu nếu click bên ngoài
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-
-  const [scrollPosition, setScrollPosition] = useState(0);
 
   return (
     <div>
       <HeroUINavbar
         className={cn(
           `fixed transition-all duration-300 ease-in-out z-10`,
-          scrollPosition === 0 && `backdrop-filter-none bg-navbarGradient p-5`,
         )}
         maxWidth="xl"
       >
