@@ -85,7 +85,7 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
       <div className="flex justify-center gap-2 overflow-x-auto pb-4">
         {propertyImages.map((item, index) => (
           <button
-            key={index}
+            key="hehe"
             className={`relative shrink-0 cursor-pointer transition-all duration-200 ${
               index === currentIndex
                 ? "ring-4 ring-blue-500"

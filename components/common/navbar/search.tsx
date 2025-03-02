@@ -1,11 +1,11 @@
 "use client";
 
 import {
-   Modal,
-   ModalBody,
-   ModalContent,
-   ModalFooter,
-   useDisclosure,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  useDisclosure,
 } from "@heroui/modal";
 import { Autocomplete, AutocompleteItem, Button, Slider } from "@heroui/react";
 import { Icon } from "@iconify/react";
@@ -127,14 +127,14 @@ export default function SearchBox() {
   }, []);
 
   // Fetch
-    const { provinceData, isFetching } = useGetProvincesQuery(null, {
-      selectFromResult: (res) => ({
-        provinceData: (res.data as Province[]) ?? [],
-        isFetching: res.isFetching,
-      }),
-    });
-    const [districts, setDistricts] = useState<District[]>([]);
-    const [getDistrics, { isLoading: districtLoading }] = useGetDistricMutation();
+  const { provinceData, isFetching } = useGetProvincesQuery(null, {
+    selectFromResult: (res) => ({
+      provinceData: (res.data as Province[]) ?? [],
+      isFetching: res.isFetching,
+    }),
+  });
+  const [districts, setDistricts] = useState<District[]>([]);
+  const [getDistrics, { isLoading: districtLoading }] = useGetDistricMutation();
 
   const getDistricsFunc = async () => {
     const res = await getDistrics(selectedProvince as string).unwrap();
@@ -148,6 +148,7 @@ export default function SearchBox() {
 
   const handleApply = () => {
     const queryParams = new URLSearchParams();
+
     if (key) {
       queryParams.set("type", key);
     }
@@ -177,7 +178,8 @@ export default function SearchBox() {
 
     // Thêm phân trang vào query parameters
     queryParams.set("page", "1"); // Bắt đầu từ trang 1
-    const path = `/du-an${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
+    const path =
+      "/du-an" + (queryParams.toString() ? "?" + queryParams.toString() : "");
 
     // Đóng modal và chuyển hướng
     onClose();
@@ -282,20 +284,19 @@ export default function SearchBox() {
                   {/* Slider */}
                   <Slider
                     className="max-w-md"
-                    defaultValue={[0, 30000000000]} 
+                    defaultValue={[0, 30000000000]}
                     maxValue={30000000000}
                     minValue={0}
-                    step={100000000} 
-                    onChange={(value) => setValues(value as [number, number])} 
+                    step={100000000}
+                    onChange={(value) => setValues(value as [number, number])}
                   />
 
                   {/* Giá trị đầu và cuối hiển thị phía dưới */}
                   <div className="flex justify-between text-sm text-gray-600">
                     <span>Khoảng giá:</span>
                     <span>
-                      {values[0] === 0 && values[1] === 30000000000
-                        ? `${formatCurrency(values[0])} - ${formatCurrency(values[1])}` // Hiển thị giá trị từ 0 đến 3 tỷ
-                        : `${formatCurrency(values[0])} - ${formatCurrency(values[1])}`}
+                      `vnd{formatCurrency(values[0])} - vnd
+                      {formatCurrency(values[1])}`
                     </span>
                   </div>
                 </div>

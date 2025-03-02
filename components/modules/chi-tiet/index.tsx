@@ -85,7 +85,7 @@ export default function DetailProperties() {
                   { icon: "", label: "Địa chỉ", value: detailProperties?.address || "Không rõ" },
                ]
                   .map((item, index) => (
-                    <div key={index} className="flex items-center gap-2 text-sm text-gray-600">
+                    <div key="hehe" className="flex items-center gap-2 text-sm text-gray-600">
                       <Icon icon={item.icon} className="h-5 w-5 text-purple-600" />
                       <span><strong>{item.label}:</strong> {item.value || "N/A"}</span>
                     </div>
@@ -102,7 +102,7 @@ export default function DetailProperties() {
                 <PopoverContent>
                   <Menu aria-label="Agents menu">
                     {(detailProperties?.transactions ?? []).map((transaction: any, index: any) => (
-                      <MenuItem key={index} onClick={() => {}} className="hover:bg-gray-200">
+                      <MenuItem key="huhu" onClick={() => {}} className="hover:bg-gray-200">
                         <div className="flex items-center gap-3 p-3">
                           <Icon icon="mdi:phone" className="h-5 w-5 text-green-600" />
                           <div>

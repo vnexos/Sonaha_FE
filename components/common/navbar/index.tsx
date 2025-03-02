@@ -1,6 +1,4 @@
 "use client";
-import { Input } from "@heroui/input";
-import { Kbd } from "@heroui/kbd";
 import { Listbox, ListboxItem } from "@heroui/listbox";
 import {
   Navbar as HeroUINavbar,
@@ -21,24 +19,6 @@ import SearchBox from "./search";
 import { useGetProvincesQuery } from "@/store/queries/province";
 
 export const Navbar = () => {
-  const SearchInput = () => (
-    <Input
-      aria-label="Search"
-      classNames={{
-        inputWrapper: "bg-default-100",
-        input: "text-sm",
-      }}
-      endContent={
-        <Kbd className="hidden lg:inline-block" keys={["command"]}>
-          K
-        </Kbd>
-      }
-      labelPlacement="outside"
-      placeholder="Search..."
-      type="search"
-    />
-  );
-
   enum type_properties_typePropertiesName {
     Apartment = "Căn hộ",
     OfficeBuilding = "Tòa nhà văn phòng",
@@ -132,14 +112,13 @@ export const Navbar = () => {
     },
   ];
 
-  const { provinceData, isFetching, isSuccess } = useGetProvincesQuery(null, {
+  const { provinceData } = useGetProvincesQuery(null, {
     selectFromResult: (result) => ({
       provinceData: result.data, // Extracting data from the query result
       isFetching: result.isFetching, // Current fetching state of the query
       isSuccess: result.isSuccess, // Query success state
     }),
   });
-  
 
   console.log(provinceData);
 
@@ -210,11 +189,11 @@ export const Navbar = () => {
           <NavbarMenuToggle />
         </NavbarContent>
         <NavbarMenu>
-          <SearchInput />
+          <SearchBox />
           <div className="mx-4 mt-2 flex flex-col gap-2">
             <Listbox aria-label="Project List" className="lisbox">
               {projectMenuItems.map((item) => (
-                <ListboxItem key={item.href} href={item.href}>
+                <ListboxItem key={item.href} href={`/du-an?type=${item.href}`}>
                   {item.label}
                 </ListboxItem>
               ))}
