@@ -1,5 +1,5 @@
 import { PhotoIcon, PlayIcon } from "@heroicons/react/24/solid";
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface AlbumRendererProps {
   propertyImages: string[];
@@ -25,12 +25,9 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
     );
   }
 
-  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCurrentIndex(parseInt(e.target.value));
-  };
-
   const renderMedia = () => {
     const item = propertyImages[currentIndex];
+
     if (!item) return null;
 
     const isVideo = item.match(/\.(mp4|webm|ogg)$/i);
@@ -40,31 +37,25 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
         {isVideo ? (
           <>
             {!isPlaying && (
-              <div
-                role="button"
-                tabIndex={0}
+              <button
                 className="absolute inset-0 flex items-center justify-center cursor-pointer"
+                tabIndex={0}
                 onClick={handleVideoPlay}
-                onKeyDown={(e) => e.key === 'Enter' && handleVideoPlay()}
+                onKeyDown={(e) => e.key === "Enter" && handleVideoPlay()}
               >
                 <div className="absolute inset-0 bg-black opacity-90" />
                 <PlayIcon className="relative w-20 h-20 text-white opacity-90 hover:opacity-100 transition-opacity" />
-              </div>
+              </button>
             )}
             <video
               controls
               autoPlay={isPlaying}
               className="w-full h-full object-contain"
-              onPlay={handleVideoPlay}
               onPause={handleVideoPause}
+              onPlay={handleVideoPlay}
             >
               <source src={item} type="video/mp4" />
-              <track
-                kind="captions"
-                srcLang="vi"
-                label="Vietnamese"
-                default
-              />
+              <track default kind="captions" label="Vietnamese" srcLang="vi" />
               Trình duyệt của bạn không hỗ trợ thẻ video.
             </video>
           </>
@@ -72,8 +63,8 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
           <img
             alt="Property"
             className="w-full h-full object-contain"
-            src={item}
             loading="lazy"
+            src={item}
           />
         )}
       </div>
@@ -91,7 +82,7 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
       <div className="flex justify-center gap-2 overflow-x-auto pb-4">
         {propertyImages.map((item, index) => (
           <button
-            key={index}
+            key="hehe"
             className={`relative shrink-0 cursor-pointer transition-all duration-200 ${
               index === currentIndex
                 ? "ring-4 ring-blue-500"
@@ -100,14 +91,14 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
             style={{ width: "80px", height: "80px" }}
             type="button"
             onClick={() => handleThumbnailClick(index)}
-            onKeyDown={(e) => e.key === 'Enter' && handleThumbnailClick(index)}
+            onKeyDown={(e) => e.key === "Enter" && handleThumbnailClick(index)}
           >
             <div className="relative w-full h-full rounded-lg overflow-hidden bg-black">
               <img
                 alt={`Thumbnail ${index + 1}`}
                 className="w-full h-full object-cover"
-                src={item}
                 loading="lazy"
+                src={item}
               />
               {item.match(/\.(mp4|webm|ogg)$/i) && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/50">

@@ -1,4 +1,3 @@
-"use client";
 import {
   Autocomplete,
   AutocompleteItem,
@@ -24,7 +23,6 @@ interface Province {
 export default function SidebarNav() {
   const router = useRouter();
   const [inputValue, setInputValue] = useState<string>("");
-  const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
@@ -45,7 +43,6 @@ export default function SidebarNav() {
   };
 
   const handleChangeProvince = (province: string) => {
-    setSelectedProvince(province);
     router.push(`/du-an?province=${province}`);
     if (isMobile) setIsOpen(false);
   };
@@ -72,7 +69,6 @@ export default function SidebarNav() {
 
   return (
     <>
-      {/* Desktop View */}
       {!isMobile && (
         <Sidebar
           aria-label="Sidebar with provinces"
@@ -82,8 +78,6 @@ export default function SidebarNav() {
           {renderAutocomplete()}
         </Sidebar>
       )}
-
-      {/* Mobile View */}
       {isMobile && (
         <>
           <Button className="md:hidden m-4" onClick={() => setIsOpen(true)}>

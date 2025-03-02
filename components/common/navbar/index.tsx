@@ -10,35 +10,21 @@ import {
   NavbarMenu,
   NavbarMenuToggle,
 } from "@heroui/navbar";
-import { cn, useDisclosure } from "@heroui/react";
+import { cn } from "@heroui/react";
 import { link as linkStyles } from "@heroui/theme";
 import clsx from "clsx";
 import NextLink from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 
 import Logo from "./logo";
 import SearchBox from "./search";
 
 import { useGetProvincesQuery } from "@/store/queries/province";
-import { District } from "@/types";
+
 export const Navbar = () => {
-  const router = useRouter();
-  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
-  const [size, setSize] = React.useState("md");
 
   const [isProjectMenuOpen, setProjectMenuOpen] = useState(false); // State cho menu dự án
   const projectMenuRef = useRef(null); // Tham chiếu đến menu con
-  const [values, setValues] = useState<[number, number]>([0, 50000000000]);
-  const toggleProjectMenu = () => {
-    setProjectMenuOpen((prev) => !prev); // Đảo ngược trạng thái hiện tại
-  };
-  const handleKeyPress = (event: any) => {
-    if (event.key === "Enter" || event.key === " ") {
-      // Kiểm tra phím Enter hoặc Space
-      toggleProjectMenu();
-    }
-  };
 
   const searchInput = (
     <Input
@@ -150,19 +136,10 @@ export const Navbar = () => {
       href: "LuxuryApartment",
     },
   ];
-  const [key, setValue] = React.useState<string | null>("");
-  const [isValid, setIsValid] = useState(true); // Example state to manage validatio
-  const [touched, setTouched] = React.useState(false);
-
-  const [districtData, setDistrictData] = useState<District[]>([]);
   const [selectedProvince, setSelectedProvince] = useState<any | null>(null);
-  const [selectedDistrict, setSelectedDistrict] = useState<any | null>(null);
-  const [loadingProvince, setLoadingProvince] = useState(false);
   const [loadingDistrict, setLoadingDistrict] = useState(false);
-  const [errorProvince, setErrorProvince] = useState<string | null>(null);
-  const [errorDistrict, setErrorDistrict] = useState<string | null>(null);
 
-  const { provinceData, isFetching, isSuccess } = useGetProvincesQuery(null, {
+  const { provinceData } = useGetProvincesQuery(null, {
     selectFromResult: (result) => ({
       provinceData: result.data, // data trả về
       isFetching: result.isFetching, // trạng thái gọi api
@@ -176,18 +153,6 @@ export const Navbar = () => {
     if (!selectedProvince) return;
     console.log(selectedProvince);
     setLoadingDistrict(true);
-    // fetchDistricts(selectedProvince)
-    //   .then((results: any) => {
-    //     console.log(results);
-    //     setDistrictData(results.data);
-    //     setLoadingDistrict(false);
-    //     setErrorDistrict(null);
-    //   })
-    //   .catch((error: any) => {
-    //     setErrorDistrict("Không thể tải dữ liệu quận huyện. Vui lòng thử lại.");
-    //     setLoadingDistrict(false);
-    //     console.error(error);
-    //   });
   }, [selectedProvince]);
 
   useEffect(() => {
@@ -207,23 +172,7 @@ export const Navbar = () => {
     };
   }, []);
 
-  const sizes = [
-    "xs",
-    "sm",
-    "md",
-    "lg",
-    "xl",
-    "2xl",
-    "3xl",
-    "4xl",
-    "5xl",
-    "full",
-  ];
 
-  const handleOpen = (size: any) => {
-    setSize(size);
-    onOpen();
-  };
   const [scrollPosition, setScrollPosition] = useState(0);
 
   return (
@@ -241,46 +190,44 @@ export const Navbar = () => {
               className="flex justify-start items-center gap-1"
               href="/"
             >
-
-                  <Logo size={50} />
-              
+              <Logo size={50} />
 
               <p className="font-bold text-inherit">SONAHA</p>
             </NextLink>
           </NavbarBrand>
-            <NextLink
-              passHref
-              className={clsx(
-                linkStyles({ color: "foreground" }),
-                "data-[active=true]:text-primary data-[active=true]:font-medium",
-              )}
-              color="foreground"
-              href="/gioithieu"
-            >
-              GIỚI THIỆU
-            </NextLink>
-            <NextLink
-              className={clsx(
-                linkStyles({ color: "foreground" }),
-                "data-[active=true]:text-primary data-[active=true]:font-medium",
-              )}
-              color="foreground"
-              href="/du-an" // Đường dẫn bạn muốn chuyển đến
-            >
-              DỰ ÁN
-            </NextLink>
+          <NextLink
+            passHref
+            className={clsx(
+              linkStyles({ color: "foreground" }),
+              "data-[active=true]:text-primary data-[active=true]:font-medium",
+            )}
+            color="foreground"
+            href="/gioithieu"
+          >
+            GIỚI THIỆU
+          </NextLink>
+          <NextLink
+            className={clsx(
+              linkStyles({ color: "foreground" }),
+              "data-[active=true]:text-primary data-[active=true]:font-medium",
+            )}
+            color="foreground"
+            href="/du-an" // Đường dẫn bạn muốn chuyển đến
+          >
+            DỰ ÁN
+          </NextLink>
 
-            <NextLink
-              passHref
-              className={clsx(
-                linkStyles({ color: "foreground" }),
-                "data-[active=true]:text-primary data-[active=true]:font-medium",
-              )}
-              color="foreground"
-              href="/tintuc"
-            >
-              TIN TỨC
-            </NextLink>
+          <NextLink
+            passHref
+            className={clsx(
+              linkStyles({ color: "foreground" }),
+              "data-[active=true]:text-primary data-[active=true]:font-medium",
+            )}
+            color="foreground"
+            href="/tintuc"
+          >
+            TIN TỨC
+          </NextLink>
         </NavbarContent>
 
         <NavbarContent
