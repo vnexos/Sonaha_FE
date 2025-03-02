@@ -5,11 +5,9 @@ import SidebarNav from "@/components/common/SidebarNav";
 import { useGetBannerQuery } from "@/store/queries/banners";
 
 function HomePage() {
-  const { banners, isFetching, isSuccess } = useGetBannerQuery(null, {
+  const { banners } = useGetBannerQuery(null, {
     selectFromResult: (result) => ({
-      banners: result.data, // data trả về
-      isFetching: result.isFetching, // trạng thái gọi api
-      isSuccess: result.isSuccess,
+      banners: result.data,
     }),
   });
 

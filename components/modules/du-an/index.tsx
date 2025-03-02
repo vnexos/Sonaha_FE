@@ -42,8 +42,6 @@ export default function DuAn() {
     limit: limit,
   };
 
-  <div suppressHydrationWarning>{new Date().toLocaleString()}</div>;
-
   // Sử dụng RTK Query hook
   const {
     data: filterData,
