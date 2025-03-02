@@ -14,7 +14,6 @@ import { cn } from "@heroui/react";
 import { link as linkStyles } from "@heroui/theme";
 import clsx from "clsx";
 import NextLink from "next/link";
-import React from "react";
 
 import Logo from "./logo";
 import SearchBox from "./search";
@@ -22,8 +21,7 @@ import SearchBox from "./search";
 import { useGetProvincesQuery } from "@/store/queries/province";
 
 export const Navbar = () => {
-
-  const searchInput = (
+  const SearchInput = () => (
     <Input
       aria-label="Search"
       classNames={{
@@ -134,24 +132,21 @@ export const Navbar = () => {
     },
   ];
 
-  const { provinceData } = useGetProvincesQuery(null, {
+  const { provinceData, isFetching, isSuccess } = useGetProvincesQuery(null, {
     selectFromResult: (result) => ({
-      provinceData: result.data, // data trả về
-      isFetching: result.isFetching, // trạng thái gọi api
-      isSuccess: result.isSuccess,
+      provinceData: result.data, // Extracting data from the query result
+      isFetching: result.isFetching, // Current fetching state of the query
+      isSuccess: result.isSuccess, // Query success state
     }),
   });
+  
 
   console.log(provinceData);
-
-
 
   return (
     <div>
       <HeroUINavbar
-        className={cn(
-          `fixed transition-all duration-300 ease-in-out z-10`,
-        )}
+        className={cn(`fixed transition-all duration-300 ease-in-out z-10`)}
         maxWidth="xl"
       >
         <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -215,7 +210,7 @@ export const Navbar = () => {
           <NavbarMenuToggle />
         </NavbarContent>
         <NavbarMenu>
-          {searchInput}
+          <SearchInput />
           <div className="mx-4 mt-2 flex flex-col gap-2">
             <Listbox aria-label="Project List" className="lisbox">
               {projectMenuItems.map((item) => (

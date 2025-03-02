@@ -1,4 +1,4 @@
-import { propritiesEndpoint, provinceEndpoint } from "@/constants/endpoints";
+import { provinceEndpoint } from "@/constants/endpoints";
 import { baseApi } from "../base";
 
 // chỗ gọi api
