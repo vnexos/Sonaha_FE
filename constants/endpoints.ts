@@ -27,4 +27,3 @@ export {
     propertiesEndpoint, propritiesEndpoint, provinceEndpoint,
     detailPropertiesEndpoint
 };
-

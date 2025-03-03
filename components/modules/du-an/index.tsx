@@ -3,6 +3,7 @@ import {
   Card,
   CardBody,
   CardHeader,
+  Image,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -98,7 +99,7 @@ export default function DuAn() {
               >
                 <CardBody className="p-0 overflow-hidden">
                   <div className="w-full h-48 md:h-56 relative">
-                    <img
+                    <Image
                       alt={item.properties.name}
                       className="absolute inset-0 object-cover w-full h-full"
                       src={

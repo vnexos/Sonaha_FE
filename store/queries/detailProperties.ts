@@ -1,4 +1,3 @@
-
 import { detailPropertiesEndpoint } from "@/constants/endpoints";
 import { baseApi } from "../base";
 

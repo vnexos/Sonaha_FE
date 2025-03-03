@@ -5,6 +5,7 @@ import {
   PhotoIcon,
   PlayIcon,
 } from "@heroicons/react/24/solid";
+import { Image } from "@heroui/image";
 import { useEffect, useRef, useState } from "react";
 
 interface AlbumRendererProps {
@@ -89,7 +90,7 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
             </video>
           </>
         ) : (
-          <img
+          <Image
             alt={`Property ${index + 1}`}
             className="w-full h-full object-contain"
             loading="lazy"
@@ -208,7 +209,7 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
                   onKeyDown={(e) => e.key === "Enter" && setCurrentIndex(index)}
                 >
                   <div className="relative w-full h-full rounded-lg overflow-hidden bg-black">
-                    <img
+                    <Image
                       alt={`Thumbnail ${index + 1}`}
                       className="w-full h-full object-cover"
                       loading="lazy"
