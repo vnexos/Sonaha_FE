@@ -81,7 +81,7 @@ export const Navbar = () => {
         className="hidden lg:flex basis-1/5 sm:basis-full"
         justify="end"
       >
-        <NavbarItem className="hidden sm:flex">
+        <NavbarItem className="hidden sm:flex items-end gap-2">
           <SearchBox />
 
           <LoginButton />

@@ -73,15 +73,23 @@ function SearchBox({ isMobile = false }: Readonly<SearchBoxProps>) {
               : "w-[90vw] sm:w-[25vw] top-[10px] -mt-[20px] max-w-[300px]",
           ),
           mainWrapper: backdrop && "h-full",
+          helperWrapper: "hidden",
         }}
         endContent={
           backdrop ? (
             <Dropdown>
               <DropdownTrigger>
-                <Button variant="bordered">Open Menu</Button>
+                <Button
+                  startContent={
+                    <Icon fontSize={100} icon="material-symbols:add-location" />
+                  }
+                  variant="bordered"
+                >
+                  Địa điểm
+                </Button>
               </DropdownTrigger>
               <DropdownMenu
-                aria-label="Static Actions"
+                aria-label="Chọn địa điểm"
                 className="h-[200px] overflow-x-auto"
                 classNames={{
                   list: "overflow-x-auto",
