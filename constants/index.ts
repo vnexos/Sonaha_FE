@@ -1,6 +1,6 @@
 export const BASE_URL = process.env.NEXT_PUBLIC_ENDPOINT;
 
-export const enum type_properties_typePropertiesName {
+export enum type_properties_typePropertiesName {
    Apartment = "Căn hộ",
    OfficeBuilding = "Tòa nhà văn phòng",
    ShoppingCenter = "Trung tâm mua sắm",
@@ -92,3 +92,16 @@ export const enum type_properties_typePropertiesName {
      href: "LuxuryApartment",
    },
  ];
+ enum HouseDirection {
+  NORTH = "Bắc",
+  SOUTH = "Nam",
+  EAST = "Đông",
+  WEST = "Tây",
+  NORTHEAST = "Đông Bắc",
+  NORTHWEST = "Tây Bắc",
+  SOUTHEAST = "Đông Nam",
+  SOUTHWEST = "Tây Nam",
+}
+
+
+export default HouseDirection;

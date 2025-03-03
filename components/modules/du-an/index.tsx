@@ -1,36 +1,25 @@
 "use client";
-import { Card, CardBody, CardHeader, Image } from "@heroui/react";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Image,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import SidebarNav from "@/components/common/SidebarNav";
 import { useGetFilterApiQuery } from "@/store/queries/filterduan";
-
-enum type_properties_typePropertiesName {
-  Apartment = "Căn hộ",
-  OfficeBuilding = "Tòa nhà văn phòng",
-  ShoppingCenter = "Trung tâm mua sắm",
-  NewUrbanArea = "Khu đô thị mới",
-  MixedUseDevelopment = "Phát triển đa chức năng",
-  SocialHousing = "Nhà ở xã hội",
-  EcoResort = "Khu nghỉ dưỡng sinh thái",
-  IndustrialPark = "Khu công nghiệp",
-  SemiDetachedVilla = "Biệt thự song lập",
-  Shophouse = "Nhà phố thương mại",
-  Townhouse = "Nhà phố",
-  OtherProject = "Dự án khác",
-  BeachLand = "Đất ven biển",
-  PerennialCropLand = "Đất trồng cây lâu năm",
-  Villa = "Biệt thự",
-  ResidentialPlot = "Đất ở",
-  StreetHouse = "Nhà mặt phố",
-  LuxuryApartment = "Căn hộ cao cấp",
-}
+import "../../../styles/globals.css";
+import { type_properties_typePropertiesName } from "@/constants";
 
 export default function DuAn() {
   const params = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
-  const limit = 8;
+  const limit = 9;
 
   // Lấy các tham số filter
   const filterParams = {
@@ -65,31 +54,62 @@ export default function DuAn() {
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading data</div>;
 
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + "...";
+    }
+    return text;
+  };
+
   return (
-    <div className="mt-36">
+    <div className="p-28">
       <div className="flex flex-col md:flex-row gap-4">
         {/* Sidebar - Cố định bên trái */}
         <div className="w-full md:w-64 flex-shrink-0">
           <SidebarNav />
         </div>
-
         {/* Content Area - Chiếm không gian còn lại */}
         <div className="flex-1">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
             {filterData?.data?.paginatedResults?.map((item: any) => (
               <Card
                 key={item.propertyId}
-                className="py-4 cursor-pointer"
+                className="cursor-pointer w-[300px] border border-gray-200 rounded-none shadow-sm "  
                 onMouseUp={() => {
                   console.log("Navigating to /chi-tiet?id=" + item.propertyId);
                   router.push(`/chi-tiet?id=${item.propertyId}`);
                 }}
               >
-                <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-                  <p className="text-tiny uppercase font-bold">
-                    {item.properties.name}
-                  </p>
-                  <p className="text-tiny uppercase font-bold">
+                <CardBody className="p-0">
+                  <Image
+                    alt={item.properties.name}
+                    className="object-cover rounded-none"
+                    height={180}
+                    src={item.properties.thumbnail_url || "/fallback-image.jpg"}
+                    width={300}
+                  />
+                </CardBody>
+                <CardHeader className="p-2 flex-col items-start">
+                  <h2 className="uppercase text-medium break-words whitespace-normal w-full overflow-wrap-break-word relative">
+                    <Popover>
+                      <PopoverTrigger>
+                        <span className="w-full cursor-pointer text-sm hover:underline">
+                          {truncateText(item.properties.name, 20)}
+                        </span>
+                      </PopoverTrigger>
+                      <PopoverContent className="bg-white border border-gray-300 rounded-lg shadow-md p-2 max-w-xs z-50">
+                        <div className="px-1 py-2">
+                          <div className="text-sm font-bold">
+                            {item.properties.name}
+                          </div>
+                          <div className="text-xs text-gray-600">
+                            {item.properties.details}
+                          </div>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  </h2>
+                  <p className="text-xs uppercase text-gray-600">
                     Loại:
                     {
                       type_properties_typePropertiesName[
@@ -97,25 +117,15 @@ export default function DuAn() {
                       ]
                     }
                   </p>
-                  <small className="text-default-500">
+                  <small className="text-xs text-gray-500">
                     Tỉnh/Thành phố: {item.properties.province}
                   </small>
-                  <h4 className="font-bold text-medium">
-                    Giá:
+                  <h4 className="text-lg font-bold text-red-500 mt-1">
                     {item.properties.public_price?.toLocaleString() ??
                       "Liên hệ"}
-                    vnđ
+                    đ
                   </h4>
                 </CardHeader>
-                <CardBody className="overflow-visible py-2">
-                  <Image
-                    alt={item.properties.name}
-                    className="object-cover rounded-xl"
-                    height={180}
-                    src={item.properties.thumbnail_url || "/fallback-image.jpg"}
-                    width={270}
-                  />
-                </CardBody>
               </Card>
             ))}
           </div>
