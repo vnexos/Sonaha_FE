@@ -1,5 +1,4 @@
 "use client";
-
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -28,11 +27,9 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
         setIsCarouselOpen(false);
       }
     };
-
     if (isCarouselOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -54,31 +51,26 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
   const handleVideoPlay = () => setIsPlaying(true);
   const handleVideoPause = () => setIsPlaying(false);
   const videoRegex = /\.(mp4|webm|ogg)$/i;
-
   const isVideoFile = (fileName: string) => videoRegex.exec(fileName) !== null;
 
   const renderMedia = (index: number) => {
     const item = propertyImages[index];
-
     if (!item) return null;
-
     const isVideo = isVideoFile(item);
-
     return (
       <div className="relative w-full h-full bg-black rounded-xl overflow-hidden shadow-lg">
         {isVideo ? (
           <>
             {!isPlaying && (
-              <div
+              <button
+                aria-label="Play video"
                 className="absolute inset-0 flex items-center justify-center cursor-pointer"
-                role="button"
-                tabIndex={0}
                 onClick={handleVideoPlay}
                 onKeyDown={(e) => e.key === "Enter" && handleVideoPlay()}
               >
                 <div className="absolute inset-0 bg-black opacity-50" />
                 <PlayIcon className="relative w-12 h-12 text-white opacity-90 hover:opacity-100 transition-opacity" />
-              </div>
+              </button>
             )}
             <video
               controls
@@ -124,7 +116,7 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
           <div className="absolute top-4 left-4 bg-green-500 text-white px-3 py-1 rounded-lg text-sm font-medium shadow-md">
             Đăng bán
           </div>
-          <div className="absolute bottom-6 right-6 bg-black/50 text-white px-3 py-1 rounded-lg text-sm font-medium shadow-md flex items-center gap-2">
+          <div className="absolute bottom-6 right-6 bg-black/50 text-white px-3 py-1 rounded-lg text-sm font-medium flex items-center gap-2">
             <PhotoIcon className="w-5 h-5" />
             <span>{propertyImages.length}</span>
           </div>
@@ -208,7 +200,6 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
                       : "opacity-75 hover:opacity-100"
                   }`}
                   style={{ width: "80px", height: "80px" }}
-                  type="button"
                   onClick={() => setCurrentIndex(index)}
                   onKeyDown={(e) => e.key === "Enter" && setCurrentIndex(index)}
                 >
