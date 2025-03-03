@@ -164,7 +164,7 @@ export default function DetailProperties() {
                     {(detailProperties?.transactions ?? []).map(
                       (transaction: any, index: any) => (
                         <MenuItem
-                          key={index}
+                        key={transaction?.users_transactions_moderator_idTousers?.phone}
                           className="hover:bg-gray-200"
                           onClick={() => {}}
                         >
