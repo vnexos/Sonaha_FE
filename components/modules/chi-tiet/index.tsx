@@ -49,7 +49,7 @@ export default function DetailProperties() {
 
   return (
     <div className="space-y-8">
-      {/* Image Slider */}
+      {/* lỗi chỗ */}
       <AlbumRenderer
         propertyImages={
           detailProperties?.property_images?.map(
@@ -164,7 +164,7 @@ export default function DetailProperties() {
                     {(detailProperties?.transactions ?? []).map(
                       (transaction: any, index: any) => (
                         <MenuItem
-                          key="huhu"
+                        key={transaction?.users_transactions_moderator_idTousers?.phone}
                           className="hover:bg-gray-200"
                           onClick={() => {}}
                         >

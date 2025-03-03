@@ -86,7 +86,7 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
         {propertyImages.map((item, index) => (
           <button
             // đêm qua sửa chỗ này
-            key={currentIndex}
+            key={item}
             className={`relative shrink-0 cursor-pointer transition-all duration-200 ${
               index === currentIndex
                 ? "ring-4 ring-blue-500"
