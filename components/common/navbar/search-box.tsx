@@ -1,147 +1,133 @@
 "use client";
 import { Button } from "@heroui/button";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@heroui/dropdown";
 import { Input } from "@heroui/input";
 import { Kbd } from "@heroui/kbd";
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  useDisclosure,
-} from "@heroui/modal";
 import { cn } from "@heroui/theme";
 import { Icon } from "@iconify/react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
+
+import { useBackdrop } from "../backdrop";
 
 interface SearchBoxProps {
-  isForMobile?: boolean;
+  isMobile?: boolean;
 }
 
-function SearchBox({ isForMobile = false }: Readonly<SearchBoxProps>) {
+function SearchBox({ isMobile = false }: Readonly<SearchBoxProps>) {
   const searchRef = useRef<HTMLInputElement>(null);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isHovered, setIsHovered] = useState(false);
+  const [backdrop, setBackdrop] = useBackdrop();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key === "k") {
         event.preventDefault();
-        isOpen || onOpen();
+        searchRef.current?.focus();
+      } else if (event.key === "Escape") {
+        searchRef.current?.blur();
+        handleFocus(false)();
       }
     };
 
     document.addEventListener("keydown", handleKeyDown);
 
-    // clean up
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
+  const handleFocus = useCallback(
+    (focusState: boolean) => () => {
+      isMobile || setBackdrop(focusState);
+    },
+    [setBackdrop],
+  );
+
   return (
     <>
-      <Modal
+      <button
+        className={cn(
+          backdrop &&
+            "fixed w-screen h-screen bg-white/50 backdrop-blur-lg top-0 left-0 z-40",
+        )}
+        onMouseDown={handleFocus(false)}
+      />
+      <Input
+        ref={searchRef}
+        aria-label="Search"
+        className="outline-none h-[50px]"
         classNames={{
-          backdrop: "z-50",
+          inputWrapper: cn(
+            "bg-default-100 group-data-[focus-visible=true]:ring-0 group-data-[focus-visible=true]:ring-offset-0",
+            backdrop && "h-full",
+          ),
+          input: cn("text-sm outline-none top-10", backdrop && "text-xl"),
+          base: cn(
+            "transition-all duration-500 ease-in-out mt-10",
+            backdrop
+              ? "fixed top-[100px] left-[50%] -translate-x-[50%] w-[90vw] sm:w-[50vw] z-50 max-w-[750px]"
+              : "w-[90vw] sm:w-[25vw] top-[10px] -mt-[20px] max-w-[300px]",
+          ),
+          mainWrapper: backdrop && "h-full",
+          helperWrapper: "hidden",
         }}
-        isOpen={isOpen}
-        size="5xl"
-        onClose={() => {
-          onClose();
-          searchRef.current?.blur();
-        }}
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader>
-                <p className="text-2xl">Tìm kiếm</p>
-              </ModalHeader>
-              <ModalBody>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Magna exercitation reprehenderit magna aute tempor cupidatat
-                  consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
-                  incididunt cillum quis. Velit duis sit officia eiusmod Lorem
-                  aliqua enim laboris do dolor eiusmod.
-                </p>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
+        endContent={
+          backdrop ? (
+            <Dropdown>
+              <DropdownTrigger>
+                <Button
+                  startContent={
+                    <Icon fontSize={100} icon="material-symbols:add-location" />
+                  }
+                  variant="bordered"
+                >
+                  Địa điểm
                 </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-
-      {isForMobile ? (
-        <Input
-          ref={searchRef}
-          aria-label="Search"
-          classNames={{
-            inputWrapper:
-              "bg-default-100 transition-all duration-300 ease-in-out",
-            input: "text-sm transition-all duration-300 ease-in-out",
-            base: cn(
-              "transition-all duration-300 ease-in-out",
-              isOpen && "z-[100]",
-            ),
-            mainWrapper: "transition-all duration-300 ease-in-out",
-            innerWrapper: "transition-all duration-300 ease-in-out",
-          }}
-          endContent={
-            isOpen || (
-              <Kbd className="hidden lg:inline-block" keys={["ctrl"]}>
-                K
-              </Kbd>
-            )
-          }
-          labelPlacement="outside"
-          placeholder="Search..."
-          startContent={
-            <Icon color="#444444" fontSize={25} icon="hugeicons:search-02" />
-          }
-          type="search"
-          onClick={() => isOpen || onOpen()}
-        />
-      ) : (
-        <div className="relative flex items-center">
-          {/* Text that appears on hover */}
-          <span
-            className={cn(
-              "absolute right-full mr-2 text-md text-[#444444] font-bold transition-opacity duration-300 ease-in-out",
-              isHovered ? "opacity-100" : "opacity-0",
-            )}
-          >
-            Tìm kiếm
-          </span>
-
-          <Button
-            isIconOnly
-            className="relative"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            onPress={onOpen}
-          >
-            <Icon color="#444444" fontSize={25} icon="hugeicons:search-02" />
-          </Button>
-        </div>
-      )}
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Chọn địa điểm"
+                className="h-[200px] overflow-x-auto"
+                classNames={{
+                  list: "overflow-x-auto",
+                }}
+              >
+                <DropdownItem key="new">New file</DropdownItem>
+                <DropdownItem key="copy">Copy link</DropdownItem>
+                <DropdownItem key="edit">Edit file</DropdownItem>
+                <DropdownItem key="1">Edit file</DropdownItem>
+                <DropdownItem key="2">Edit file</DropdownItem>
+                <DropdownItem key="3">Edit file</DropdownItem>
+                <DropdownItem key="4">Edit file</DropdownItem>
+                <DropdownItem key="5">Edit file</DropdownItem>
+                <DropdownItem key="6">Edit file</DropdownItem>
+                <DropdownItem key="7">Edit file</DropdownItem>
+                <DropdownItem key="8">Edit file</DropdownItem>
+                <DropdownItem key="9">Edit file</DropdownItem>
+                <DropdownItem key="10">Edit file</DropdownItem>
+                <DropdownItem key="11">Edit file</DropdownItem>
+                <DropdownItem key="12">Edit file</DropdownItem>
+                <DropdownItem key="13">Edit file</DropdownItem>
+                <DropdownItem key="14">Edit file</DropdownItem>
+                <DropdownItem key="15">Edit file</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          ) : (
+            <Kbd className="hidden lg:inline-block" keys={["ctrl"]}>
+              K
+            </Kbd>
+          )
+        }
+        placeholder="Search..."
+        startContent={
+          <Icon color="#444444" fontSize={25} icon="hugeicons:search-02" />
+        }
+        type="search"
+        onFocus={handleFocus(true)}
+      />
     </>
   );
 }

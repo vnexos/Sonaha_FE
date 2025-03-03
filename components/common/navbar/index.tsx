@@ -15,6 +15,8 @@ import NextLink from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import LoginButton from "../login";
+
 import Logo from "./logo";
 import SearchBox from "./search-box";
 
@@ -40,15 +42,15 @@ export const Navbar = () => {
   return (
     <HeroUINavbar
       className={cn(
-        `fixed transition-all duration-300 ease-in-out`,
-        scrollPosition === 0 && "backdrop-blur-none bg-navbarGradient p-7",
+        `fixed transition-all duration-300 ease-in-out z-10`,
+        scrollPosition === 0 && `backdrop-filter-none bg-navbarGradient p-5`,
       )}
       maxWidth="xl"
     >
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
-            <Logo size={scrollPosition === 0 ? 75 : 50} />
+            <Logo size={50} />
           </NextLink>
         </NavbarBrand>
         <ul className="hidden lg:flex gap-4 justify-start ml-2">
@@ -76,20 +78,22 @@ export const Navbar = () => {
       </NavbarContent>
 
       <NavbarContent
-        className="hidden sm:flex basis-1/5 sm:basis-full"
+        className="hidden lg:flex basis-1/5 sm:basis-full"
         justify="end"
       >
-        <NavbarItem className="hidden lg:flex">
+        <NavbarItem className="hidden sm:flex items-end gap-2">
           <SearchBox />
+
+          <LoginButton />
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
+      <NavbarContent className="lg:hidden basis-1 pl-4" justify="end">
         <NavbarMenuToggle />
       </NavbarContent>
 
-      <NavbarMenu className="z-[11] mt-12 pt-10">
-        <SearchBox isForMobile={true} />
+      <NavbarMenu className="mt-10 pt-10">
+        <SearchBox isMobile />
         <div className="mx-4 mt-4 flex flex-col gap-2">
           {siteConfig.navItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
