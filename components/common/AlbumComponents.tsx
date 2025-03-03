@@ -27,9 +27,11 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
         setIsCarouselOpen(false);
       }
     };
+
     if (isCarouselOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -55,8 +57,10 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
 
   const renderMedia = (index: number) => {
     const item = propertyImages[index];
+
     if (!item) return null;
     const isVideo = isVideoFile(item);
+
     return (
       <div className="relative w-full h-full bg-black rounded-xl overflow-hidden shadow-lg">
         {isVideo ? (

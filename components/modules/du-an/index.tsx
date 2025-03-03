@@ -3,18 +3,17 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Image,
   Popover,
-  PopoverTrigger,
   PopoverContent,
+  PopoverTrigger,
 } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import SidebarNav from "@/components/common/SidebarNav";
+import { type_properties_typePropertiesName } from "@/constants";
 import { useGetFilterApiQuery } from "@/store/queries/filterduan";
 import "../../../styles/globals.css";
-import { type_properties_typePropertiesName } from "@/constants";
 
 export default function DuAn() {
   const params = useSearchParams();
@@ -39,7 +38,6 @@ export default function DuAn() {
   } = useGetFilterApiQuery(filterParams);
   const router = useRouter();
 
-  console.log(filterData);
   // Reset trang khi filter thay đổi
   useEffect(() => {
     setCurrentPage(1);
@@ -58,39 +56,59 @@ export default function DuAn() {
     if (text.length > maxLength) {
       return text.substring(0, maxLength) + "...";
     }
+
     return text;
   };
 
   return (
-    <div className="p-28">
+    <div className="min-h-screen bg-gray-100 p-2 md:p-4 lg:p-6">
+      {/* Header/Search Area */}
+      <header className="mb-4 flex flex-col items-center md:flex-row md:justify-between">
+        <h1 className="text-lg md:text-xl font-bold text-gray-800 mb-2 md:mb-0">
+          SONHA - GIỚI THIỆU DỰ ÁN TIN TỨC
+        </h1>
+        <div className="relative w-full max-w-md md:max-w-xs">
+          <select
+            className="w-full p-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+            value={params.get("province") || "Hà Tĩnh"}
+            onChange={(e) => router.push(`?province=${e.target.value}`)}
+          >
+            <option value="Hà Tĩnh">Hà Tĩnh</option>
+            {/* Add more provinces as needed */}
+          </select>
+        </div>
+      </header>
+
       <div className="flex flex-col md:flex-row gap-4">
-        {/* Sidebar - Cố định bên trái */}
-        <div className="w-full md:w-64 flex-shrink-0">
+        {/* Sidebar - Hidden on mobile, visible on desktop/tablet */}
+        <div className="hidden md:block md:w-64 flex-shrink-0">
           <SidebarNav />
         </div>
-        {/* Content Area - Chiếm không gian còn lại */}
+
+        {/* Content Area - Full width on mobile, flexible on desktop */}
         <div className="flex-1">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {filterData?.data?.paginatedResults?.map((item: any) => (
               <Card
                 key={item.propertyId}
-                className="cursor-pointer w-[300px] border border-gray-200 rounded-none shadow-sm "  
+                className="cursor-pointer border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 onMouseUp={() => {
-                  console.log("Navigating to /chi-tiet?id=" + item.propertyId);
                   router.push(`/chi-tiet?id=${item.propertyId}`);
                 }}
               >
-                <CardBody className="p-0">
-                  <Image
-                    alt={item.properties.name}
-                    className="object-cover rounded-none"
-                    height={180}
-                    src={item.properties.thumbnail_url || "/fallback-image.jpg"}
-                    width={300}
-                  />
+                <CardBody className="p-0 overflow-hidden">
+                  <div className="w-full h-48 md:h-56 relative">
+                    <img
+                      alt={item.properties.name}
+                      className="absolute inset-0 object-cover w-full h-full"
+                      src={
+                        item.properties.thumbnail_url || "/fallback-image.jpg"
+                      }
+                    />
+                  </div>
                 </CardBody>
-                <CardHeader className="p-2 flex-col items-start">
-                  <h2 className="uppercase text-medium break-words whitespace-normal w-full overflow-wrap-break-word relative">
+                <CardHeader className="p-2 flex-col items-start bg-white">
+                  <h2 className="text-sm font-medium break-words whitespace-normal w-full">
                     <Popover>
                       <PopoverTrigger>
                         <span className="w-full cursor-pointer text-sm hover:underline">
@@ -109,18 +127,19 @@ export default function DuAn() {
                       </PopoverContent>
                     </Popover>
                   </h2>
-                  <p className="text-xs uppercase text-gray-600">
+                  <p className="text-xs text-gray-600">
                     Loại:
                     {
                       type_properties_typePropertiesName[
-                        item.typePropertiesName as keyof typeof type_properties_typePropertiesName
+                        item.properties
+                          .typePropertiesName as keyof typeof type_properties_typePropertiesName
                       ]
                     }
                   </p>
                   <small className="text-xs text-gray-500">
                     Tỉnh/Thành phố: {item.properties.province}
                   </small>
-                  <h4 className="text-lg font-bold text-red-500 mt-1">
+                  <h4 className="text-base font-bold text-red-500 mt-1">
                     {item.properties.public_price?.toLocaleString() ??
                       "Liên hệ"}
                     đ
@@ -130,8 +149,8 @@ export default function DuAn() {
             ))}
           </div>
 
-          {/* Pagination */}
-          <div className="mt-6 flex items-center justify-center gap-2">
+          {/* Pagination - Centered and responsive */}
+          <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-2">
             <button
               aria-label="Previous page"
               className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-white transition-colors hover:bg-blue-600 disabled:bg-gray-300 disabled:hover:bg-gray-300"
@@ -185,6 +204,26 @@ export default function DuAn() {
             </button>
           </div>
         </div>
+      </div>
+
+      {/* Mobile Sidebar Toggle (Optional) - You can add a button or hamburger menu here */}
+      <div className="md:hidden fixed bottom-4 left-4">
+        <button className="p-2 bg-blue-500 text-white rounded-full">
+          <svg
+            className="h-6 w-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 6h16M4 12h16m-7 6h7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+            />
+          </svg>
+        </button>
       </div>
     </div>
   );

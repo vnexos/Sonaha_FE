@@ -1,9 +1,5 @@
+import { redirect } from "next/navigation";
 
-import DetailProperties from '@/components/modules/chi-tiet'
-import React from 'react'
-
-export default function page() {
-  return (
-      <DetailProperties/>
-  )
+export default async function page() {
+  return redirect("/");
 }

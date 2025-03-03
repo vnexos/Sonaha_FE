@@ -1,6 +1,6 @@
 "use client";
 
-import Carousel, { CarouselImage } from "@/components/common/carousel";
+import Carousel from "@/components/common/carousel";
 import SidebarNav from "@/components/common/SidebarNav";
 import { useGetBannerQuery } from "@/store/queries/banners";
 
@@ -11,21 +11,20 @@ function HomePage() {
     }),
   });
 
-  // Chuyển đổi dữ liệu từ API thành định dạng CarouselImage
-  const carouselImages: CarouselImage[] = banners
-    ? banners.map((banner: any) => ({
-        id: banner.banner_id,
-        url: banner.image_url,
-        fallbackUrl: banner.image_url, // Bạn có thể sử dụng cùng một URL hoặc thêm fallback URL nếu cần
-        des: banner.title, // Giữ lại thuộc tính name
-      }))
-    : [];
-
-  console.log(banners);
-
   return (
     <div className="">
-      <Carousel images={carouselImages} />
+      <Carousel
+        images={
+          banners
+            ? banners.map((banner: any) => ({
+                id: banner.banner_id,
+                url: banner.image_url,
+                fallbackUrl: banner.image_url, // Bạn có thể sử dụng cùng một URL hoặc thêm fallback URL nếu cần
+                des: banner.title, // Giữ lại thuộc tính name
+              }))
+            : []
+        }
+      />
       <div className=" pt-10 flex flex-row m-auto container">
         <div className="w-[18%]">
           <SidebarNav />
