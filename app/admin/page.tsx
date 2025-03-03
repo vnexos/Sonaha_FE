@@ -1,32 +1,24 @@
 "use client";
 import React from "react";
+
 import Heading from "@/utils/Heading";
-import AdminSidebar from "@/components/common/Admin/sidebar/AdminSidebar";
-//import AdminProtected from "../hooks/adminProtected";
 import DashboardHero from "@/components/common/Admin/DashboardHero";
+import DashboardWidgets from "@/components/common/Admin/Widgets/DashboardWidgets";
 
-type Props = {};
-
-const page = (props: Props) => {
+const Page = () => {
   return (
     <div>
-      {/* <AdminProtected> */}
       <Heading
-        title="SONAHA - Admin"
         description="Quản Lý Dự Án Bất Động Sản Của Tập Đoàn SoNa"
         keywords="Programming,MERN,Redux,Machine Learning"
+        title="SONAHA - Admin"
       />
-      <div className="flex min-h-screen">
-        <div className="1500px:w-[16%] w-1/5">
-          <AdminSidebar />
-        </div>
-        <div className="w-[85%]">
-          <DashboardHero isDashboard={true} />
-        </div>
+      <div className="w-full">
+        <DashboardHero isDashboard={true} />
       </div>
-      {/* </AdminProtected> */}
+      <DashboardWidgets />
     </div>
   );
 };
 
-export default page;
+export default Page;

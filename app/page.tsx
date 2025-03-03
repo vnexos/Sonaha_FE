@@ -8,7 +8,6 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-
   return (
     <section className="h-full w-full">
       <Navbar />

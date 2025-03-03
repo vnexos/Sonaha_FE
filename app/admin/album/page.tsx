@@ -1,12 +1,12 @@
 "use client";
 import React from "react";
 
-import BannerGrid from "@/components/modules/Admin/Banner/BannerGrid";
+import GetAllMedia from "@/components/modules/Admin/Album/GetAllMedia";
 
 const Page = () => {
   return (
     <div>
-      <BannerGrid />
+      <GetAllMedia />
     </div>
   );
 };
