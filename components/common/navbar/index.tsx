@@ -1,109 +1,115 @@
 "use client";
-import { Link } from "@heroui/link";
+import { Listbox, ListboxItem } from "@heroui/listbox";
 import {
   Navbar as HeroUINavbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
   NavbarMenu,
-  NavbarMenuItem,
   NavbarMenuToggle,
 } from "@heroui/navbar";
-import { cn, link as linkStyles } from "@heroui/theme";
+import { cn } from "@heroui/react";
+import { link as linkStyles } from "@heroui/theme";
 import clsx from "clsx";
 import NextLink from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-
-import LoginButton from "../login";
 
 import Logo from "./logo";
-import SearchBox from "./search-box";
+import SearchBox from "./search";
 
-import { siteConfig } from "@/config/site";
+import { useGetProvincesQuery } from "@/store/queries/province";
+import { projectMenuItems } from "@/constants";
 
 export const Navbar = () => {
-  const pathname = usePathname();
 
-  const [scrollPosition, setScrollPosition] = useState(0);
+  const { provinceData } = useGetProvincesQuery(null, {
+    selectFromResult: (result) => ({
+      provinceData: result.data, // Extracting data from the query result
+      isFetching: result.isFetching, // Current fetching state of the query
+      isSuccess: result.isSuccess, // Query success state
+    }),
+  });
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollPosition(window.scrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  console.log(provinceData);
 
   return (
-    <HeroUINavbar
-      className={cn(
-        `fixed transition-all duration-300 ease-in-out z-10`,
-        scrollPosition === 0 && `backdrop-filter-none bg-navbarGradient p-5`,
-      )}
-      maxWidth="xl"
-    >
-      <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
-        <NavbarBrand as="li" className="gap-3 max-w-fit">
-          <NextLink className="flex justify-start items-center gap-1" href="/">
-            <Logo size={50} />
-          </NextLink>
-        </NavbarBrand>
-        <ul className="hidden lg:flex gap-4 justify-start ml-2">
-          {siteConfig.navItems.map((item) => {
-            const isActive = pathname === item.href;
-
-            return (
-              <NavbarItem key={item.href}>
-                <NextLink
-                  className={clsx(
-                    linkStyles({ color: "foreground" }),
-                    "data-[active=true]:text-primary data-[active=true]:font-medium",
-                    isActive,
-                  )}
-                  color="foreground"
-                  data-active={isActive}
-                  href={item.href}
-                >
-                  {item.label}
-                </NextLink>
-              </NavbarItem>
-            );
-          })}
-        </ul>
-      </NavbarContent>
-
-      <NavbarContent
-        className="hidden lg:flex basis-1/5 sm:basis-full"
-        justify="end"
+    <div>
+      <HeroUINavbar
+        className={cn(`fixed transition-all duration-300 ease-in-out z-10`)}
+        maxWidth="xl"
       >
-        <NavbarItem className="hidden sm:flex">
+        <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
+          <NavbarBrand as="li" className="gap-3 max-w-fit">
+            <NextLink
+              className="flex justify-start items-center gap-1"
+              href="/"
+            >
+              <Logo size={50} />
+
+              <p className="font-bold text-inherit">SONAHA</p>
+            </NextLink>
+          </NavbarBrand>
+          <NextLink
+            passHref
+            className={clsx(
+              linkStyles({ color: "foreground" }),
+              "data-[active=true]:text-primary data-[active=true]:font-medium",
+            )}
+            color="foreground"
+            href="/gioithieu"
+          >
+            GIỚI THIỆU
+          </NextLink>
+          <NextLink
+            className={clsx(
+              linkStyles({ color: "foreground" }),
+              "data-[active=true]:text-primary data-[active=true]:font-medium",
+            )}
+            color="foreground"
+            href="/du-an" // Đường dẫn bạn muốn chuyển đến
+          >
+            DỰ ÁN
+          </NextLink>
+
+          <NextLink
+            passHref
+            className={clsx(
+              linkStyles({ color: "foreground" }),
+              "data-[active=true]:text-primary data-[active=true]:font-medium",
+            )}
+            color="foreground"
+            href="/tintuc"
+          >
+            TIN TỨC
+          </NextLink>
+        </NavbarContent>
+
+        <NavbarContent
+          className="hidden sm:flex basis-1/5 sm:basis-full"
+          justify="end"
+        >
+          <NavbarItem className="hidden sm:flex">
+            <SearchBox />
+          </NavbarItem>
+        </NavbarContent>
+
+        {/* search bắt đầu từ loại, tỉnh thành, cho tới khoảng giá, còn page với limit chắc quẳng vô page */}
+
+        <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
+          <NavbarMenuToggle />
+        </NavbarContent>
+        <NavbarMenu>
           <SearchBox />
-
-          <LoginButton />
-        </NavbarItem>
-      </NavbarContent>
-
-      <NavbarContent className="lg:hidden basis-1 pl-4" justify="end">
-        <NavbarMenuToggle />
-      </NavbarContent>
-
-      <NavbarMenu className="mt-10 pt-10">
-        <SearchBox isMobile />
-        <div className="mx-4 mt-4 flex flex-col gap-2">
-          {siteConfig.navItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
-              <Link color={"foreground"} href={item.href} size="lg">
-                {item.label}
-              </Link>
-            </NavbarMenuItem>
-          ))}
-        </div>
-      </NavbarMenu>
-    </HeroUINavbar>
+          <div className="mx-4 mt-2 flex flex-col gap-2">
+            <Listbox aria-label="Project List" className="lisbox">
+              {projectMenuItems.map((item) => (
+                <ListboxItem key={item.href} href={`/du-an?type=${item.href}`}>
+                  {item.label}
+                </ListboxItem>
+              ))}
+            </Listbox>
+          </div>
+        </NavbarMenu>
+      </HeroUINavbar>
+    </div>
   );
 };
