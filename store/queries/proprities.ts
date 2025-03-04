@@ -1,5 +1,6 @@
-import { propritiesEndpoint } from "@/constants/endpoints";
 import { baseApi } from "../base";
+
+import { propritiesEndpoint } from "@/constants/endpoints";
 
 export const propritiesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
