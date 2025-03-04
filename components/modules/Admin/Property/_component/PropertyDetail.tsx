@@ -23,7 +23,6 @@ const PropertyDetail: React.FC<PropertyDetailProps> = ({
   });
   const [isEditing, setIsEditing] = useState(false);
 
-  // Xử lý thay đổi giá trị input
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {

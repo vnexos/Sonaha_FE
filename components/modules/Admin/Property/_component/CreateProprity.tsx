@@ -132,7 +132,6 @@ export const CreateProperty = ({
         formData.house_direction,
     };
 
-    // ✅ Chuyển đổi sang FormData
     const formDataToSend = new FormData();
 
     Object.entries(formDataInEnglish).forEach(([key, value]) => {
@@ -158,7 +157,12 @@ export const CreateProperty = ({
   };
 
   return (
-    <Modal isOpen={isOpen} size="4xl" onClose={onClose}>
+    <Modal
+      className="overflow-y-auto max-h-[80vh]"
+      isOpen={isOpen}
+      size="4xl"
+      onClose={onClose}
+    >
       <ModalContent>
         <form onSubmit={handleSubmit}>
           <ModalHeader>Create New Property</ModalHeader>
@@ -219,9 +223,7 @@ export const CreateProperty = ({
                 label="Hướng ban công"
                 name="balcony_direction"
                 selectedKeys={
-                  formData.balcony_direction
-                    ? [formData.balcony_direction]
-                    : []
+                  formData.balcony_direction ? [formData.balcony_direction] : []
                 }
                 onSelectionChange={(keys) => {
                   const selectedKey = Array.from(keys)[0] as string;

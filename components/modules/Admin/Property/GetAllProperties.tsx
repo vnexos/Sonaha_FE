@@ -80,6 +80,8 @@ const GetAllProperties = () => {
           Thêm Mới +
         </Button>
       </div>
+      {isLoading && <div>Loading...</div>}
+      {error && <div>Error loading properties</div>}
       {selectedProperty ? (
         <PropertyDetail
           property={selectedProperty}
@@ -87,12 +89,9 @@ const GetAllProperties = () => {
           onDelete={handleDelete}
           onSave={handleSave}
         />
-      ) : isLoading ? (
-        <div>Đang tải dữ liệu...</div>
-      ) : error ? (
-        <div>Không có dữ liệu</div>
       ) : (
         <>
+          <div>getReadableStatus(error, isLoading)</div>
           <div>
             <Table aria-label="Bảng danh sách bất động sản">
               <TableHeader>
