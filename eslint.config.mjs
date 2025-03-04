@@ -23,7 +23,7 @@ const compat = new FlatCompat({
 
 export default [
   {
-    files: ["**/**.js", "**/**.tsx", "**/**.js", "**/**.jsx", "**/**.*js"],
+    files: ["**/**.tsx", "**/**.ts", "**/**.jsx", "**/**.*js"],
   },
   {
     ignores: [

@@ -17,6 +17,5 @@ export const siteConfig = {
       href: "/quyền-lợi",
     },
   ],
-  links: {
-  },
+  links: {},
 };
