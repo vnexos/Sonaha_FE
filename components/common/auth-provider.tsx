@@ -4,7 +4,11 @@ import { useVerifyTokenMutation } from "@/store/queries/auth";
 import { clearLoginToken, loginFromToken } from "@/store/slices/auth";
 import { useAppDispatch } from "@/utils/redux";
 
-export default function AuthProvider({ children }: { children: ReactNode }) {
+interface AuthProvider {
+  children: ReactNode;
+}
+
+export default function AuthProvider({ children }: Readonly<AuthProvider>) {
   const [verifyToken] = useVerifyTokenMutation();
   const dispatch = useAppDispatch();
 

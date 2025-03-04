@@ -6,7 +6,7 @@ import { User } from "@/types";
 import webStorageClient from "@/utils/webStorageClient";
 interface AuthSlickInterface {
   isAuthenticatedAccount: boolean;
-  user?: User | undefined;
+  user?: User;
 }
 
 const initialState: AuthSlickInterface = {
