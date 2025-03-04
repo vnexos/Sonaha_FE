@@ -18,7 +18,6 @@ interface ItemProps {
   icon: JSX.Element;
   selected: string;
   setSelected: (title: string) => void;
-  className?: string;
 }
 
 export const Item: FC<ItemProps> = ({
@@ -125,16 +124,13 @@ const AdminSidebar = () => {
           title="Media"
           to="/admin/album"
         />
-        <li className="mt-6">
-          <Item
-            className="flex items-center space-x-3 px-4 py-2 text-red-500 hover:bg-red-100 dark:hover:bg-red-900 rounded-md"
-            icon={<PowerIcon className="w-6 h-6" />}
-            selected={selected}
-            setSelected={setSelected}
-            title="Đăng Xuất"
-            to="/"
-          />
-        </li>
+        <Item
+          icon={<PowerIcon className="w-6 h-6" />}
+          selected={selected}
+          setSelected={setSelected}
+          title="Đăng Xuất"
+          to="/"
+        />
       </ul>
     </div>
   );

@@ -72,11 +72,14 @@ const GetAllProperties = () => {
     }
   };
 
-  if (isLoading) return <div>Đang tải dữ liệu...</div>;
-  if (error) return <div>Lỗi khi tải danh sách bất động sản</div>;
-
   return (
     <>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Quản Lý Bất Động Sản</h1>
+        <Button color="primary" onPress={() => setIsCreateModalOpen(true)}>
+          Thêm Mới +
+        </Button>
+      </div>
       {selectedProperty ? (
         <PropertyDetail
           property={selectedProperty}
@@ -84,35 +87,34 @@ const GetAllProperties = () => {
           onDelete={handleDelete}
           onSave={handleSave}
         />
+      ) : isLoading ? (
+        <div>Đang tải dữ liệu...</div>
+      ) : error ? (
+        <div>Không có dữ liệu</div>
       ) : (
-        <div>
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold">Quản Lý Bất Động Sản</h1>
-            <Button color="primary" onPress={() => setIsCreateModalOpen(true)}>
-              Thêm Mới +
-            </Button>
+        <>
+          <div>
+            <Table aria-label="Bảng danh sách bất động sản">
+              <TableHeader>
+                {columns.map((column) => (
+                  <TableColumn key={column.key}>{column.label}</TableColumn>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {properties?.map((property: PropertyType) => (
+                  <TableRow
+                    key={property.property_id}
+                    className="cursor-pointer hover:bg-gray-100"
+                    onClick={() => setSelectedProperty(property)}
+                  >
+                    {(columnKey) => (
+                      <TableCell>{getKeyValue(property, columnKey)}</TableCell>
+                    )}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
-          <Table aria-label="Bảng danh sách bất động sản">
-            <TableHeader>
-              {columns.map((column) => (
-                <TableColumn key={column.key}>{column.label}</TableColumn>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {properties?.map((property: PropertyType) => (
-                <TableRow
-                  key={property.property_id}
-                  className="cursor-pointer hover:bg-gray-100"
-                  onClick={() => setSelectedProperty(property)}
-                >
-                  {(columnKey) => (
-                    <TableCell>{getKeyValue(property, columnKey)}</TableCell>
-                  )}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-
           <CreateProperty
             isOpen={isCreateModalOpen}
             onClose={() => setIsCreateModalOpen(false)}
@@ -120,7 +122,7 @@ const GetAllProperties = () => {
               refetch();
             }}
           />
-        </div>
+        </>
       )}
     </>
   );

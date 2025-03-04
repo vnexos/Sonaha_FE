@@ -5,7 +5,6 @@ export const Dialog = ({
   children,
 }: {
   open: boolean;
-  onOpenChange: (open: boolean) => void;
   children: React.ReactNode;
 }) => {
   return (

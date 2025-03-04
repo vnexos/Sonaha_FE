@@ -1,4 +1,4 @@
-import { albumEndpoint, bannerEndpoint } from "@/constants/endpoints";
+import { albumEndpoint } from "@/constants/endpoints";
 import { baseApi } from "../base";
 
 export const albumApi = baseApi.injectEndpoints({

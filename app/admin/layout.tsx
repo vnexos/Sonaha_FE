@@ -5,9 +5,9 @@ import AdminSidebar from "@/components/common/Admin/sidebar/AdminSidebar";
 
 export default function AdminLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <div className="flex min-h-screen">
       <div className="1500px:w-[16%] w-1/5">
