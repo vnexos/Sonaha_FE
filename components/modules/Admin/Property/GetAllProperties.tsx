@@ -91,7 +91,6 @@ const GetAllProperties = () => {
         />
       ) : (
         <>
-          <div>getReadableStatus(error, isLoading)</div>
           <div>
             <Table aria-label="Bảng danh sách bất động sản">
               <TableHeader>

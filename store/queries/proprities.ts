@@ -12,9 +12,9 @@ export const propritiesApi = baseApi.injectEndpoints({
 
     }),
 
-    getPropritiesID: builder.query<any, number>({
+    getPropritiesID: builder.mutation<any, number>({
       query: (id) => ({
-        url: `${propritiesEndpoint.GET_ID_PROPRITIES}/${id}`,
+        url: `${propritiesEndpoint.GET_ID_PROPRITIES.replace("{ID}", id.toString())}`,
         method: "GET",
       }),
     }),
@@ -54,7 +54,7 @@ export const propritiesApi = baseApi.injectEndpoints({
 
 export const {
   useGetPropritiesQuery,
-  useGetPropritiesIDQuery,
+  useGetPropritiesIDMutation, // cais nay lam mutation moi dung
   useCreateProprityMutation,
   useDeletePropertyMutation,
   useUpdatePropertyMutation,

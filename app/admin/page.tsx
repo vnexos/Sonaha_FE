@@ -14,7 +14,7 @@ const Page = () => {
         title="SONAHA - Admin"
       />
       <div className="w-full">
-        <DashboardHero isDashboard={true} />
+        <DashboardHero />
       </div>
       <DashboardWidgets />
     </div>

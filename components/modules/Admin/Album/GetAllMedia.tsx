@@ -2,32 +2,51 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Button } from "@heroui/button";
+import { motion } from "framer-motion";
 
+import AlbumProperty from "./_component/album_property";
 import { useGetPropritiesQuery } from "@/store/queries/proprities";
 import { PropertyType } from "@/types/admin/proprity-type";
-import AlbumProperty from "@/components/modules/Admin/Album/_component/album_property";
 
 const GetAllMedia = () => {
   const { data: properties, isLoading, error } = useGetPropritiesQuery();
-  const [selectedProperty, setSelectedProperty] = useState<PropertyType | null>(
-    null,
-  );
+  const [selectedPropertyId, setSelectedPropertyId] = useState<number | null>(null);
+
+  // Animation variants cho hover
+  const cardVariants = {
+    initial: { scale: 1, y: 0 },
+    hover: {
+      scale: 1.05,
+      y: -10,
+      transition: {
+        duration: 0.3,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const handleCardClick = (propertyId: number) => {
+    setSelectedPropertyId(propertyId);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedPropertyId(null);
+  };
+
+  if (isLoading) return <div className="p-4">Loading...</div>;
+  if (error) return <div className="p-4">Error loading properties</div>;
 
   return (
     <div className="p-4">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Danh sách Bất động sản</h1>
-        <Button color="primary">+ Thêm mới</Button>
-      </div>
-      {isLoading && <div>Loading...</div>}
-      {error && <div>Error loading properties</div>}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {properties?.map((property: PropertyType) => (
-          <button
+          <motion.button
             key={property.property_id}
-            className="bg-white shadow-md rounded-lg overflow-hidden cursor-pointer"
-            onClick={() => setSelectedProperty(property)}
+            className="bg-white shadow-md rounded-lg overflow-hidden cursor-pointer focus:outline-none"
+            variants={cardVariants}
+            initial="initial"
+            whileHover="hover"
+            onClick={() => handleCardClick(property.property_id)}
           >
             <Image
               unoptimized
@@ -47,16 +66,12 @@ const GetAllMedia = () => {
                 Giá: {property.public_price} VNĐ
               </p>
             </div>
-          </button>
+          </motion.button>
         ))}
       </div>
 
-      {/* Hiển thị AlbumProperty nếu có property được chọn */}
-      {selectedProperty && (
-        <AlbumProperty
-          property={selectedProperty}
-          onClose={() => setSelectedProperty(null)}
-        />
+      {selectedPropertyId && (
+        <AlbumProperty property_id={selectedPropertyId} onClose={handleCloseModal} />
       )}
     </div>
   );
