@@ -3,11 +3,7 @@ import React, { useState } from "react";
 
 import DashboardHeader from "./DashboardHeader";
 
-type Props = {
-  isDashboard?: boolean;
-};
-
-const DashboardHero = ({}: Props) => {
+const DashboardHero = () => {
   const [open, setOpen] = useState(false);
 
   return (

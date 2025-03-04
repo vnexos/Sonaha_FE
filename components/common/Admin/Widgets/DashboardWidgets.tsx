@@ -9,7 +9,7 @@ type Props = {
   value?: number;
 };
 
-const DashboardWidgets: FC<Props> = ({}) => {
+const DashboardWidgets: FC<Props> = () => {
   const [hoveredWidget, setHoveredWidget] = useState<string | null>(null);
   const router = useRouter();
 

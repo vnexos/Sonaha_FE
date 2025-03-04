@@ -6,7 +6,7 @@ import { Button } from "@heroui/button";
 
 import { useGetPropritiesQuery } from "@/store/queries/proprities";
 import { PropertyType } from "@/types/admin/proprity-type";
-import AlbumProperty from "@/components/modules/Admin/Album/_component/album_property"; // Import component mới
+import AlbumProperty from "@/components/modules/Admin/Album/_component/album_property";
 
 const GetAllMedia = () => {
   const { data: properties, isLoading, error } = useGetPropritiesQuery();
@@ -14,16 +14,14 @@ const GetAllMedia = () => {
     null,
   );
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading properties</div>;
-
   return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Danh sách Bất động sản</h1>
         <Button color="primary">+ Thêm mới</Button>
       </div>
-
+      {isLoading && <div>Loading...</div>}
+      {error && <div>Error loading properties</div>}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {properties?.map((property: PropertyType) => (
           <button

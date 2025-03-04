@@ -5,8 +5,6 @@ import {
   UsersIcon,
   NewspaperIcon,
   VideoCameraIcon,
-  ArrowLeftIcon,
-  ArrowRightIcon,
   PowerIcon,
   FolderIcon,
   MegaphoneIcon,
@@ -43,10 +41,9 @@ export const Item: FC<ItemProps> = ({
 };
 
 const AdminSidebar = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
   const [mounted, setMounted] = useState(false);
-  // const { router } = useRouter();
 
   useEffect(() => setMounted(true), []);
   if (!mounted) return null;
@@ -55,21 +52,6 @@ const AdminSidebar = () => {
     <div
       className={`fixed top-0 left-0 h-screen z-50 transition-all ${isCollapsed ? "w-20" : "w-64"} bg-white dark:bg-gray-900 shadow-lg p-4`}
     >
-      {/* Toggle Sidebar */}
-      <button
-        className="absolute top-4 right-4 p-2 rounded-full bg-gray-200 dark:bg-gray-700"
-        onClick={() => {
-          setIsCollapsed(!isCollapsed);
-        }}
-      >
-        {isCollapsed ? (
-          <ArrowRightIcon className="w-6 h-6 text-gray-600 dark:text-gray-300" />
-        ) : (
-          <ArrowLeftIcon className="w-6 h-6 text-gray-600 dark:text-gray-300" />
-        )}
-      </button>
-
-      {/* Logo */}
       <div className="flex items-center justify-center py-4">
         {!isCollapsed && (
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">

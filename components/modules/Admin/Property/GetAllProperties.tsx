@@ -23,10 +23,6 @@ import {
   useDeletePropertyMutation,
   useUpdatePropertyMutation,
 } from "@/store/queries/proprities";
-// type PropertyDetailProps = {
-//   property: PropertyType;
-//   onClose: () => void;
-// };
 
 const GetAllProperties = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -41,7 +37,6 @@ const GetAllProperties = () => {
   } = useGetPropritiesQuery();
   const [updateProperty] = useUpdatePropertyMutation();
   const [deleteProperty] = useDeletePropertyMutation();
-  // const [propertyList, setPropertyList] = useState<PropertyType[]>([]);
 
   const columns = [
     { key: "property_id", label: "Mã BĐS" },

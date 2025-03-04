@@ -3,7 +3,6 @@ import React from "react";
 
 import Heading from "@/utils/Heading";
 import AdminSidebar from "@/components/common/Admin/sidebar/AdminSidebar";
-//import AdminProtected from "../hooks/adminProtected";
 import DashboardHero from "@/components/common/Admin/DashboardHero";
 import DashboardCenter from "@/components/common/Admin/Widgets/DashboardCenter";
 
