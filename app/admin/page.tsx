@@ -1,9 +1,8 @@
 "use client";
-import React from "react";
 
-import Heading from "@/utils/Heading";
 import DashboardHero from "@/components/common/Admin/DashboardHero";
 import DashboardWidgets from "@/components/common/Admin/Widgets/DashboardWidgets";
+import Heading from "@/utils/Heading";
 
 const Page = () => {
   return (

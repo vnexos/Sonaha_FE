@@ -25,7 +25,7 @@ const AlbumProperty: React.FC<AlbumPropertyProps> = ({
   const [createVideo, { isLoading: isCreatingVideo }] =
     useCreateVideoMutation();
   const [deleteAlbum, { isLoading: isDeleting }] = useDeleteAlbumMutation();
-  const [property, setProperty] = useState<any | null>(null);
+  const [property, setProperty] = useState<any>(null);
   const [imageFiles, setImageFiles] = useState<File[] | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
 
