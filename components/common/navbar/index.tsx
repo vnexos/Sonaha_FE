@@ -42,7 +42,7 @@ export const Navbar = () => {
   return (
     <HeroUINavbar
       className={cn(
-        `fixed transition-all duration-300 ease-in-out z-10`,
+        `fixed transition-all duration-300 ease-in-out z-10 w-screen`,
         scrollPosition === 0 && `backdrop-filter-none bg-navbarGradient p-5`,
       )}
       maxWidth="xl"

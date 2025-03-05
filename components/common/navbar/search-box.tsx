@@ -10,9 +10,12 @@ import { Input } from "@heroui/input";
 import { Kbd } from "@heroui/kbd";
 import { cn } from "@heroui/theme";
 import { Icon } from "@iconify/react";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { useBackdrop } from "../backdrop";
+
+import { useGetAllProvinceQuery } from "@/store/queries/provinces";
+import { Province } from "@/types";
 
 interface SearchBoxProps {
   isMobile?: boolean;
@@ -21,6 +24,14 @@ interface SearchBoxProps {
 function SearchBox({ isMobile = false }: Readonly<SearchBoxProps>) {
   const searchRef = useRef<HTMLInputElement>(null);
   const [backdrop, setBackdrop] = useBackdrop();
+  const { provinces, isFetching } = useGetAllProvinceQuery(undefined, {
+    selectFromResult: ({ data, isFetching }) => ({
+      isFetching,
+      provinces: (data as Province[]) ?? [],
+    }),
+  });
+
+  const [selectedProvince, setSelectedProvince] = useState<Province>();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -42,9 +53,24 @@ function SearchBox({ isMobile = false }: Readonly<SearchBoxProps>) {
 
   const handleFocus = useCallback(
     (focusState: boolean) => () => {
+      window.scrollTo({ behavior: "instant", top: 0 });
       isMobile || setBackdrop(focusState);
     },
     [setBackdrop],
+  );
+
+  const locationNav = useMemo(
+    () => (
+      <>
+        <div className="flex align-middle">
+          <Button isIconOnly>
+            <Icon fontSize={25} icon="solar:arrow-left-outline" />
+          </Button>
+          <p className="align-middle">{selectedProvince?.name}</p>
+        </div>
+      </>
+    ),
+    [selectedProvince],
   );
 
   return (
@@ -80,6 +106,8 @@ function SearchBox({ isMobile = false }: Readonly<SearchBoxProps>) {
             <Dropdown>
               <DropdownTrigger>
                 <Button
+                  isDisabled={isFetching}
+                  isLoading={isFetching}
                   startContent={
                     <Icon fontSize={100} icon="material-symbols:add-location" />
                   }
@@ -90,29 +118,21 @@ function SearchBox({ isMobile = false }: Readonly<SearchBoxProps>) {
               </DropdownTrigger>
               <DropdownMenu
                 aria-label="Chọn địa điểm"
-                className="h-[200px] overflow-x-auto"
+                className="h-[250px] overflow-x-auto"
                 classNames={{
                   list: "overflow-x-auto",
                 }}
+                closeOnSelect={false}
+                topContent={selectedProvince ? <>{locationNav}</> : <></>}
               >
-                <DropdownItem key="new">New file</DropdownItem>
-                <DropdownItem key="copy">Copy link</DropdownItem>
-                <DropdownItem key="edit">Edit file</DropdownItem>
-                <DropdownItem key="1">Edit file</DropdownItem>
-                <DropdownItem key="2">Edit file</DropdownItem>
-                <DropdownItem key="3">Edit file</DropdownItem>
-                <DropdownItem key="4">Edit file</DropdownItem>
-                <DropdownItem key="5">Edit file</DropdownItem>
-                <DropdownItem key="6">Edit file</DropdownItem>
-                <DropdownItem key="7">Edit file</DropdownItem>
-                <DropdownItem key="8">Edit file</DropdownItem>
-                <DropdownItem key="9">Edit file</DropdownItem>
-                <DropdownItem key="10">Edit file</DropdownItem>
-                <DropdownItem key="11">Edit file</DropdownItem>
-                <DropdownItem key="12">Edit file</DropdownItem>
-                <DropdownItem key="13">Edit file</DropdownItem>
-                <DropdownItem key="14">Edit file</DropdownItem>
-                <DropdownItem key="15">Edit file</DropdownItem>
+                {provinces.map((data) => (
+                  <DropdownItem
+                    key={data.code}
+                    onPress={() => setSelectedProvince(data)}
+                  >
+                    {data.name}
+                  </DropdownItem>
+                ))}
               </DropdownMenu>
             </Dropdown>
           ) : (

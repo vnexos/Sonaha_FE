@@ -31,7 +31,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
-    <html suppressHydrationWarning lang="en">
+    <html suppressHydrationWarning className="!pr-0" lang="en">
       <head />
       <body
         className={clsx(

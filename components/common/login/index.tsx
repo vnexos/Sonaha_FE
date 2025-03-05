@@ -163,7 +163,7 @@ export default function LoginButton() {
       </Modal>
     </>
   ) : (
-    <Dropdown classNames={{ base: "my-10" }} placement="bottom-start">
+    <Dropdown placement="bottom-start">
       <DropdownTrigger>
         <UserDisplay
           as="button"
@@ -171,6 +171,7 @@ export default function LoginButton() {
             isBordered: true,
             src: user.avartar_url,
           }}
+          className="mx-10"
           description={user.email}
           name={user.name}
         />
