@@ -26,3 +26,11 @@ export type LoginResponse = {
   token: string;
   user: User;
 };
+
+export type Province = {
+  code: string;
+  name: string;
+  full_name: string;
+  full_name_end: string;
+  code_name: string;
+};

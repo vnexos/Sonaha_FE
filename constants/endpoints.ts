@@ -10,4 +10,8 @@ const authEndpoint = {
   CHECK_TOKEN: `${API_PREFIX}/auth/checkToken?token={token}`,
 };
 
-export { authEndpoint, propritiesEndpoint };
+const provinceEndpoint = {
+  GET_ALL_PROVINCE: `${API_PREFIX}/province`,
+};
+
+export { authEndpoint, propritiesEndpoint, provinceEndpoint };
