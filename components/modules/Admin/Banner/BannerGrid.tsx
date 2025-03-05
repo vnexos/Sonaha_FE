@@ -3,21 +3,93 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@heroui/button";
+import { Icon } from "@iconify/react";
+import { toast, ToastContainer } from "react-toastify";
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from "@heroui/modal";
+import { Input } from "@heroui/input";
 
 import { BannerType } from "./_type/banner_type";
 
-import { useGetBannerQuery } from "@/store/queries/banner";
+import {
+  useGetBannerQuery,
+  useDeleteBannerMutation,
+  useCreateBannerMutation,
+} from "@/store/queries/banner";
 
 const BannerGrid = () => {
-  const { data: banners, isLoading, error } = useGetBannerQuery({});
+  const { data: banners, isLoading, error, refetch } = useGetBannerQuery({});
+  const [deleteBanner] = useDeleteBannerMutation();
+  const [createBanner] = useCreateBannerMutation();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [pausedBanners, setPausedBanners] = useState<Record<number, boolean>>(
+    {},
+  );
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading banners</div>;
+  // State cho form trong modal
+  const [title, setTitle] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [linkUrl, setLinkUrl] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  const toggleBannerStatus = (bannerId: number) => {
+    setPausedBanners((prev) => ({
+      ...prev,
+      [bannerId]: !prev[bannerId],
+    }));
+  };
+
+  const handleDelete = async (bannerID: number) => {
+    try {
+      await deleteBanner(bannerID).unwrap();
+      toast.success("Đã xoá thành công");
+      refetch();
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+
+    setImageFile(file);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    formData.append("tittle", title || "");
+    if (imageFile) formData.append("img", imageFile);
+    formData.append("link_url", linkUrl || "");
+    if (endDate) formData.append("end_date", endDate);
+
+    try {
+      await createBanner(formData).unwrap();
+      toast.success("Đã tạo banner thành công");
+      refetch();
+      setIsCreateModalOpen(false);
+      resetForm();
+    } catch (error: any) {
+      toast.error("Lỗi khi tạo banner: " + (error.message || "Không xác định"));
+    }
+  };
+
+  const resetForm = () => {
+    setTitle("");
+    setImageFile(null);
+    setLinkUrl("");
+    setEndDate("");
+  };
 
   return (
     <div className="p-4">
-      {/* Nút Thêm Mới */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Danh sách Banner</h1>
         <Button color="primary" onPress={() => setIsCreateModalOpen(true)}>
@@ -25,7 +97,9 @@ const BannerGrid = () => {
         </Button>
       </div>
 
-      {/* Hiển thị danh sách banner */}
+      {isLoading && <div>Loading...</div>}
+      {error && <div>Error loading properties</div>}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {banners?.map((banner: BannerType) => (
           <div
@@ -39,36 +113,114 @@ const BannerGrid = () => {
               src={banner.image_url}
               width={300}
             />
-            <div className="p-4">
-              <h3 className="text-lg font-semibold">{banner.title}</h3>
-              <p className="text-gray-500 text-sm">
-                Bắt đầu: {new Date(banner.start_date).toLocaleDateString()}
-              </p>
-              <a
-                className="text-blue-500 text-sm mt-2 block"
-                href={banner.link_url}
-              >
-                Xem chi tiết →
-              </a>
+            <div className="p-4 flex justify-between items-center">
+              <div>
+                <h3 className="text-lg font-semibold">{banner.title}</h3>
+                <p className="text-gray-500 text-sm">
+                  Bắt đầu: {new Date(banner.start_date).toLocaleDateString()}
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  className="text-red-500 hover:text-red-700"
+                  onClick={() => handleDelete(banner.banner_id)}
+                >
+                  <Icon icon="mdi:trash-can" width={20} />
+                </button>
+                <button
+                  className="text-gray-500 hover:text-gray-700"
+                  onClick={() => toggleBannerStatus(banner.banner_id)}
+                >
+                  <Icon
+                    icon={
+                      pausedBanners[banner.banner_id]
+                        ? "mdi:play-circle"
+                        : "mdi:pause-circle"
+                    }
+                    width={20}
+                  />
+                </button>
+              </div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Modal thêm mới (Chưa có logic xử lý) */}
-      {isCreateModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl font-bold mb-4">Thêm mới Banner</h2>
+      {/* Modal tạo banner */}
+      <Modal
+        className="overflow-y-auto max-h-[80vh]"
+        isOpen={isCreateModalOpen}
+        size="4xl"
+        onClose={() => setIsCreateModalOpen(false)}
+      >
+        <ModalContent>
+          <ModalHeader>Create New Banner</ModalHeader>
+          <ModalBody>
+            <form className="space-y-4" id="bannerForm" onSubmit={handleSubmit}>
+              <div>
+                <label className="block mb-1" htmlFor="title">
+                  Title
+                </label>
+                <Input
+                  required
+                  id="title"
+                  placeholder="Enter title"
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="block mb-1" htmlFor="img">
+                  Image
+                </label>
+                <input
+                  className="w-full p-2 border rounded-md"
+                  id="img"
+                  type="file"
+                  onChange={handleFileChange}
+                />
+              </div>
+              <div>
+                <label className="block mb-1" htmlFor="linkUrl">
+                  URL
+                </label>
+                <Input
+                  id="linkUrl"
+                  placeholder="Enter link URL"
+                  type="text"
+                  value={linkUrl}
+                  onChange={(e) => setLinkUrl(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="block mb-1" htmlFor="endDate">
+                  End Date
+                </label>
+                <Input
+                  id="endDate"
+                  type="datetime-local"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                />
+              </div>
+            </form>
+          </ModalBody>
+          <ModalFooter>
             <Button
               color="secondary"
               onPress={() => setIsCreateModalOpen(false)}
             >
-              Đóng
+              Cancel
             </Button>
-          </div>
-        </div>
-      )}
+            <Button color="primary" form="bannerForm" type="submit">
+              Create Banner
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <ToastContainer position="bottom-right" />
     </div>
   );
 };

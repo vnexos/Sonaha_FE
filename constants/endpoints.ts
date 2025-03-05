@@ -9,7 +9,9 @@ const propritiesEndpoint = {
 };
 
 const bannerEndpoint = {
-    GET_ALL_BANNER: `${API_PREFIX}/banner/getAllBanner`
+    GET_ALL_BANNER: `${API_PREFIX}/Banner/getAllBanner`,
+    CREATE_BANNER: `${API_PREFIX}/Banner/newBanner`,
+    DELETE_BANNER: `${API_PREFIX}/Banner/deleteBanner/{id}`
 }
 const provinceEndpoint = {
     GET_ALL_PROVINCE: `${API_PREFIX}/province`,

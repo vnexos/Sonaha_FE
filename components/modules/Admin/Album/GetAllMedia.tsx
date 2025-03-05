@@ -5,12 +5,15 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 
 import AlbumProperty from "./_component/album_property";
+
 import { useGetPropritiesQuery } from "@/store/queries/proprities";
 import { PropertyType } from "@/types/admin/proprity-type";
 
 const GetAllMedia = () => {
   const { data: properties, isLoading, error } = useGetPropritiesQuery();
-  const [selectedPropertyId, setSelectedPropertyId] = useState<number | null>(null);
+  const [selectedPropertyId, setSelectedPropertyId] = useState<number | null>(
+    null,
+  );
 
   // Animation variants cho hover
   const cardVariants = {
@@ -43,8 +46,8 @@ const GetAllMedia = () => {
           <motion.button
             key={property.property_id}
             className="bg-white shadow-md rounded-lg overflow-hidden cursor-pointer focus:outline-none"
-            variants={cardVariants}
             initial="initial"
+            variants={cardVariants}
             whileHover="hover"
             onClick={() => handleCardClick(property.property_id)}
           >
@@ -71,7 +74,10 @@ const GetAllMedia = () => {
       </div>
 
       {selectedPropertyId && (
-        <AlbumProperty property_id={selectedPropertyId} onClose={handleCloseModal} />
+        <AlbumProperty
+          property_id={selectedPropertyId}
+          onClose={handleCloseModal}
+        />
       )}
     </div>
   );
