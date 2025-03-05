@@ -10,17 +10,17 @@ import {
   ModalHeader,
 } from "@heroui/modal";
 import { Select, SelectItem } from "@heroui/select";
+import { addToast } from "@heroui/toast";
 import { useState } from "react";
-import { toast } from "react-toastify";
 
 import { PropertyType } from "../../../../../types/admin/proprity-type";
 
+import { useCreateProprityMutation } from "@/store/queries/proprities";
 import {
-  useGetProvinceQuery,
   useGetDistrictsQuery,
+  useGetProvinceQuery,
   useGetWardsQuery,
 } from "@/store/queries/province";
-import { useCreateProprityMutation } from "@/store/queries/proprities";
 
 interface CreatePropertyProps {
   isOpen: boolean;
@@ -148,11 +148,19 @@ export const CreateProperty = ({
 
     try {
       await createProperty(formDataToSend).unwrap();
-      toast.success("Tạo mới dự án thành công");
+      addToast({
+        title: "Thông Báo",
+        description: "Thêm mới Dự Án thành công",
+        color: "success",
+      });
       onSubmit(formDataInEnglish);
       onClose();
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch {
+      addToast({
+        title: "Lỗi",
+        description: "Thêm mới Dự Án không thành công",
+        color: "danger",
+      });
     }
   };
 

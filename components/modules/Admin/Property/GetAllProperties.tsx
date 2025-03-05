@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@heroui/button";
 import {
   getKeyValue,
   Table,
@@ -9,9 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from "@heroui/table";
-import { Button } from "@heroui/button";
+import { addToast } from "@heroui/toast";
 import { useState } from "react";
-import { toast } from "react-toastify";
 
 import { PropertyType } from "../../../../types/admin/proprity-type";
 
@@ -19,8 +19,8 @@ import { CreateProperty } from "./_component/CreateProprity";
 import PropertyDetail from "./_component/PropertyDetail";
 
 import {
-  useGetPropritiesQuery,
   useDeletePropertyMutation,
+  useGetPropritiesQuery,
   useUpdatePropertyMutation,
 } from "@/store/queries/proprities";
 
@@ -55,8 +55,17 @@ const GetAllProperties = () => {
     try {
       await updateProperty(updatedProperty).unwrap();
       refetch();
-    } catch (error: any) {
-      toast.error(error.message);
+      addToast({
+        title: "Thông Báo",
+        description: "Lưu thành công",
+        color: "success",
+      });
+    } catch {
+      addToast({
+        title: "Lỗi",
+        description: "Lưu không thành công",
+        color: "danger",
+      });
     }
   };
 
@@ -64,10 +73,18 @@ const GetAllProperties = () => {
     if (window.confirm("Bạn có chắc chắn muốn xóa không?")) {
       try {
         await deleteProperty(propertyId).unwrap();
-        toast.success("Đã xoá thành công");
+        addToast({
+          title: "Thông Báo",
+          description: "Đã xóa Dự Án thành công",
+          color: "success",
+        });
         refetch();
-      } catch (error: any) {
-        toast.error(error.message);
+      } catch {
+        addToast({
+          title: "Lỗi",
+          description: "Xóa Dự Án không thành công",
+          color: "danger",
+        });
       }
     }
   };

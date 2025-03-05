@@ -14,7 +14,9 @@ export default function AdminLayout({
         <AdminSidebar />
       </div>
       <div className="w-[84%] flex flex-col">
-        <div className="flex-1 p-4 overflow-auto">{children}</div>
+        <div className="flex-1 p-4 overflow-auto">
+          <AdminLayout>{children}</AdminLayout>
+        </div>
       </div>
     </div>
   );

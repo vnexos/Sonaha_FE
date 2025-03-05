@@ -1,14 +1,14 @@
 "use client";
+import { addToast } from "@heroui/toast";
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
 
-import { useGetPropritiesIDMutation } from "@/store/queries/proprities";
 import {
   useCreateImgMutation,
   useCreateVideoMutation,
   useDeleteAlbumMutation,
 } from "@/store/queries/album";
+import { useGetPropritiesIDMutation } from "@/store/queries/proprities";
 
 type AlbumPropertyProps = {
   property_id: number;
@@ -34,10 +34,12 @@ const AlbumProperty: React.FC<AlbumPropertyProps> = ({
       const result = await getProperty(id).unwrap();
 
       setProperty(result);
-    } catch (err: any) {
-      toast.error(
-        "Failed to fetch property: " + (err.message || "Unknown error"),
-      );
+    } catch {
+      addToast({
+        title: "Lỗi",
+        description: "Có lỗi xảy ra",
+        color: "danger",
+      });
     }
   };
 
@@ -49,7 +51,11 @@ const AlbumProperty: React.FC<AlbumPropertyProps> = ({
     e.preventDefault();
 
     if (!imageFiles || !Array.isArray(imageFiles) || imageFiles.length === 0) {
-      toast.warn("No valid image files selected.");
+      addToast({
+        title: "Cảnh Báo",
+        description: "Chưa có Album nào được chọn",
+        color: "warning",
+      });
 
       return;
     }
@@ -62,13 +68,21 @@ const AlbumProperty: React.FC<AlbumPropertyProps> = ({
     });
 
     try {
-      const result = await createImg(formData).unwrap();
+      await createImg(formData).unwrap();
 
-      toast.success(result.message);
+      addToast({
+        title: "Thông Báo",
+        description: "Tạo Album ảnh thành công",
+        color: "success",
+      });
       fetchProperty(property_id);
       setImageFiles(null);
-    } catch (err: any) {
-      toast.error("Failed to upload images:", err.message || "Unknown error");
+    } catch {
+      addToast({
+        title: "Lỗi",
+        description: "Lỗi khi tạo Album nào được chọn",
+        color: "danger",
+      });
     }
   };
 
@@ -85,8 +99,18 @@ const AlbumProperty: React.FC<AlbumPropertyProps> = ({
       await createVideo(formData).unwrap();
       fetchProperty(property_id);
       setVideoFile(null);
-    } catch (err: any) {
-      toast.error("Failed to upload images:", err.message || "Unknown error");
+
+      addToast({
+        title: "Thông Báo",
+        description: "Tạo Album ảnh thành công",
+        color: "success",
+      });
+    } catch {
+      addToast({
+        title: "Lỗi",
+        description: "Lỗi khi tạo Album nào được chọn",
+        color: "danger",
+      });
     }
   };
 
@@ -94,8 +118,17 @@ const AlbumProperty: React.FC<AlbumPropertyProps> = ({
     try {
       await deleteAlbum(property_id).unwrap();
       setProperty(null);
-    } catch (err: any) {
-      toast.error("Failed to upload images:", err.message || "Unknown error");
+      addToast({
+        title: "Thông Báo",
+        description: "Tạo Album ảnh thành công",
+        color: "success",
+      });
+    } catch {
+      addToast({
+        title: "Lỗi",
+        description: "Lỗi khi tạo Album nào được chọn",
+        color: "danger",
+      });
     }
   };
 

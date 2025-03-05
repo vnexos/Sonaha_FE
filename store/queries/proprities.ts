@@ -1,5 +1,8 @@
-import { propritiesEndpoint } from "@/constants/endpoints";
+import { addToast } from "@heroui/toast";
+
 import { baseApi } from "../base";
+
+import { propritiesEndpoint } from "@/constants/endpoints";
 import { PropertyType } from "@/types/admin/proprity-type";
 
 export const propritiesApi = baseApi.injectEndpoints({
@@ -9,7 +12,6 @@ export const propritiesApi = baseApi.injectEndpoints({
         url: propritiesEndpoint.GET_ALL_PROPRITIES,
         method: "GET",
       }),
-
     }),
 
     getPropritiesID: builder.mutation<any, number>({
@@ -26,24 +28,30 @@ export const propritiesApi = baseApi.injectEndpoints({
         body: newProprity,
       }),
       extraOptions: {
-        onSuccess: (data: any) => {
-          console.log("Mutation thành công:", data);
+        onSuccess: () => {
+          addToast({
+            title: "Thông Báo",
+            description: "Thêm Dự Án thành công",
+            color: "success",
+          });
         },
       },
-
     }),
 
     //nó bị sao a
 
     deleteProperty: builder.mutation<void, number>({
       query: (id) => ({
-        url: propritiesEndpoint.Del_ID_PROPRITIES.replace("{ID}", id.toString()),
+        url: propritiesEndpoint.Del_ID_PROPRITIES.replace(
+          "{ID}",
+          id.toString(),
+        ),
         method: "DELETE",
       }),
     }),
 
     updateProperty: builder.mutation<PropertyType, Partial<PropertyType>>({
-      query: ({ property_id, ...data }) => ({
+      query: ({ ...data }) => ({
         url: propritiesEndpoint.UPDATE_ID_PROPRITIES,
         method: "PUT",
         body: data,

@@ -1,16 +1,7 @@
 "use client";
-import { FC, useEffect, useState } from "react";
-import {
-  HomeIcon,
-  UsersIcon,
-  NewspaperIcon,
-  VideoCameraIcon,
-  PowerIcon,
-  FolderIcon,
-  MegaphoneIcon,
-  InformationCircleIcon,
-} from "@heroicons/react/24/outline";
+import { Icon } from "@iconify/react";
 import Link from "next/link";
+import { FC, useEffect, useState } from "react";
 
 interface ItemProps {
   title: string;
@@ -63,7 +54,10 @@ const AdminSidebar = () => {
       <ul className="space-y-3">
         <Item
           icon={
-            <HomeIcon className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+            <Icon
+              className="w-6 h-6 text-gray-600 dark:text-gray-300"
+              icon={"material-symbols:home"}
+            />
           }
           selected={selected}
           setSelected={setSelected}
@@ -72,7 +66,10 @@ const AdminSidebar = () => {
         />
         <Item
           icon={
-            <NewspaperIcon className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+            <Icon
+              className="w-6 h-6 text-gray-600 dark:text-gray-300"
+              icon={"material-symbols:wallpaper-slideshow"}
+            />
           }
           selected={selected}
           setSelected={setSelected}
@@ -81,7 +78,10 @@ const AdminSidebar = () => {
         />
         <Item
           icon={
-            <FolderIcon className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+            <Icon
+              className="w-6 h-6 text-gray-600 dark:text-gray-300"
+              icon={"material-symbols:responsive-layout-outline"}
+            />
           }
           selected={selected}
           setSelected={setSelected}
@@ -90,7 +90,10 @@ const AdminSidebar = () => {
         />
         <Item
           icon={
-            <InformationCircleIcon className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+            <Icon
+              className="w-6 h-6 text-gray-600 dark:text-gray-300"
+              icon={"material-symbols:ink-pen-rounded"}
+            />
           }
           selected={selected}
           setSelected={setSelected}
@@ -99,7 +102,10 @@ const AdminSidebar = () => {
         />
         <Item
           icon={
-            <MegaphoneIcon className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+            <Icon
+              className="w-6 h-6 text-gray-600 dark:text-gray-300"
+              icon={"material-symbols:newspaper"}
+            />
           }
           selected={selected}
           setSelected={setSelected}
@@ -108,7 +114,10 @@ const AdminSidebar = () => {
         />
         <Item
           icon={
-            <UsersIcon className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+            <Icon
+              className="w-6 h-6 text-gray-600 dark:text-gray-300"
+              icon={"material-symbols:user-attributes-rounded"}
+            />
           }
           selected={selected}
           setSelected={setSelected}
@@ -117,7 +126,10 @@ const AdminSidebar = () => {
         />
         <Item
           icon={
-            <VideoCameraIcon className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+            <Icon
+              className="w-6 h-6 text-gray-600 dark:text-gray-300"
+              icon={"material-symbols:animated-images"}
+            />
           }
           selected={selected}
           setSelected={setSelected}
@@ -125,7 +137,12 @@ const AdminSidebar = () => {
           to="/admin/album"
         />
         <Item
-          icon={<PowerIcon className="w-6 h-6" />}
+          icon={
+            <Icon
+              className="w-6 h-6"
+              icon={"material-symbols:logout-rounded"}
+            />
+          }
           selected={selected}
           setSelected={setSelected}
           title="Đăng Xuất"

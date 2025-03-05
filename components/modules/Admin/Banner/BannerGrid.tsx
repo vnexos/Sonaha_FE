@@ -1,10 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
 import { Button } from "@heroui/button";
-import { Icon } from "@iconify/react";
-import { toast, ToastContainer } from "react-toastify";
+import { Input } from "@heroui/input";
 import {
   Modal,
   ModalBody,
@@ -12,14 +9,17 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@heroui/modal";
-import { Input } from "@heroui/input";
+import { addToast } from "@heroui/toast";
+import { Icon } from "@iconify/react";
+import Image from "next/image";
+import { useState } from "react";
 
 import { BannerType } from "./_type/banner_type";
 
 import {
-  useGetBannerQuery,
-  useDeleteBannerMutation,
   useCreateBannerMutation,
+  useDeleteBannerMutation,
+  useGetBannerQuery,
 } from "@/store/queries/banner";
 
 const BannerGrid = () => {
@@ -47,10 +47,18 @@ const BannerGrid = () => {
   const handleDelete = async (bannerID: number) => {
     try {
       await deleteBanner(bannerID).unwrap();
-      toast.success("Đã xoá thành công");
+      addToast({
+        title: "Thông Báo",
+        description: "Đã xóa banner thành công",
+        color: "success",
+      });
       refetch();
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch {
+      addToast({
+        title: "Lỗi",
+        description: "Xóa banner không thành công",
+        color: "danger",
+      });
     }
   };
 
@@ -72,12 +80,20 @@ const BannerGrid = () => {
 
     try {
       await createBanner(formData).unwrap();
-      toast.success("Đã tạo banner thành công");
+      addToast({
+        title: "Thông Báo",
+        description: "Tạo banner thành công",
+        color: "success",
+      });
       refetch();
       setIsCreateModalOpen(false);
       resetForm();
     } catch (error: any) {
-      toast.error("Lỗi khi tạo banner: " + (error.message || "Không xác định"));
+      addToast({
+        title: "Lỗi",
+        description: error.data?.message || "Tạo banner không thành công",
+        color: "danger",
+      });
     }
   };
 
@@ -219,8 +235,6 @@ const BannerGrid = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-
-      <ToastContainer position="bottom-right" />
     </div>
   );
 };
