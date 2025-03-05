@@ -61,14 +61,12 @@ function SearchBox({ isMobile = false }: Readonly<SearchBoxProps>) {
 
   const locationNav = useMemo(
     () => (
-      <>
-        <div className="flex align-middle">
-          <Button isIconOnly>
-            <Icon fontSize={25} icon="solar:arrow-left-outline" />
-          </Button>
-          <p className="align-middle">{selectedProvince?.name}</p>
-        </div>
-      </>
+      <div className="flex align-middle">
+        <Button isIconOnly>
+          <Icon fontSize={25} icon="solar:arrow-left-outline" />
+        </Button>
+        <p className="align-middle">{selectedProvince?.name}</p>
+      </div>
     ),
     [selectedProvince],
   );
