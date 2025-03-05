@@ -1,4 +1,4 @@
-const API_PREFIX = "http://localhost:8080";
+const API_PREFIX = "";
 
 const propritiesEndpoint = {
   GET_ALL_PROPRITIES: `${API_PREFIX}/proprities`,
@@ -30,9 +30,10 @@ const authEndpoint = {
 };
 
 export {
-  propritiesEndpoint,
-  bannerEndpoint,
-  provinceEndpoint,
   albumEndpoint,
   authEndpoint,
+  bannerEndpoint,
+  propritiesEndpoint,
+  provinceEndpoint
 };
+
