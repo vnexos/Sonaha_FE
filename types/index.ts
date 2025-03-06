@@ -34,3 +34,25 @@ export type Province = {
   full_name_end: string;
   code_name: string;
 };
+// Định nghĩa enum cho các field của form (không cần gán giá trị cụ thể)
+export enum ContactFields {
+  email = "email",
+  name = "name",
+  phone = "phone",
+  content = "content",
+}
+
+// Định nghĩa type cho contact data và errors
+export type ContactData = {
+  email: string;
+  name: string;
+  phone: string;
+  content: string;
+};
+
+export type ContactErrors = {
+  email?: string;
+  name?: string;
+  phone?: string;
+  content?: string;
+};

@@ -6,30 +6,25 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from "@heroui/modal"; // Import từ HeroUI
+} from "@heroui/modal";
 import { addToast } from "@heroui/toast";
-import { Icon } from "@iconify/react"; // Import Icon component từ Iconify
+import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
 
 import { useSendContactMutation } from "@/store/queries/contact";
+import { ContactData, ContactErrors, ContactFields } from "@/types";
 
 const Contact = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({
+  const [contactData, setFormData] = useState<ContactData>({
     email: "",
     name: "",
     phone: "",
     content: "",
   });
-  const [errors, setErrors] = useState({
-    email: "",
-    name: "",
-    phone: "",
-    content: "",
-  });
+  const [errors, setErrors] = useState<ContactErrors>({});
 
-  // Sử dụng mutation từ contactApi
   const [sendContact, { isLoading }] = useSendContactMutation();
 
   useEffect(() => {
@@ -39,42 +34,42 @@ const Contact = () => {
 
     window.addEventListener("scroll", handleScroll);
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const validateForm = () => {
     let isValid = true;
-    const newErrors = { email: "", name: "", phone: "", content: "" };
+    const newErrors: ContactErrors = {};
 
-    if (!formData.name.trim()) {
+    if (!contactData.name.trim()) {
       newErrors.name = "Tên không được để trống";
       isValid = false;
     }
 
-    if (!formData.email.trim()) {
+    if (!contactData.email.trim()) {
       newErrors.email = "Email không được để trống";
       isValid = false;
     } else if (
-      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
+        contactData.email,
+      )
     ) {
       newErrors.email = "Email không hợp lệ";
       isValid = false;
     }
 
-    if (!formData.phone.trim()) {
+    if (!contactData.phone.trim()) {
       newErrors.phone = "Số điện thoại không được để trống";
       isValid = false;
-    } else if (!/^\d{10,11}$/.test(formData.phone)) {
+    } else if (!/^\d{10,11}$/.test(contactData.phone)) {
       newErrors.phone = "Số điện thoại phải là 10-11 số";
       isValid = false;
     }
 
-    if (!formData.content.trim()) {
+    if (!contactData.content.trim()) {
       newErrors.content = "Nội dung không được để trống";
       isValid = false;
-    } else if (formData.content.length > 1000) {
+    } else if (contactData.content.length > 1000) {
       newErrors.content = "Nội dung không được vượt quá 1000 ký tự";
       isValid = false;
     }
@@ -88,30 +83,34 @@ const Contact = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
+    const field = name as ContactFields;
 
-    setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: "" });
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: undefined }));
   };
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
     setIsModalOpen(false);
-    setFormData({ email: "", name: "", phone: "", content: "" });
-    setErrors({ email: "", name: "", phone: "", content: "" });
+    setFormData({
+      email: "",
+      name: "",
+      phone: "",
+      content: "",
+    });
+    setErrors({});
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        // Gửi dữ liệu qua API
-        await sendContact(formData).unwrap();
+        await sendContact(contactData).unwrap();
         addToast({
           title: "Đăng kí nhận tin thành công",
           description: "Chúng tôi sẽ sớm thông tin cho bạn",
           color: "success",
         });
-
         closeModal();
       } catch {}
     }
@@ -125,7 +124,6 @@ const Contact = () => {
         ${scrollPosition > 0 ? " rounded-lg p-4" : ""}
       `}
     >
-      {/* Nút Zalo */}
       <a
         aria-label="Liên hệ qua Zalo"
         className="w-14 h-14 bg-blue-500 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 transition-colors"
@@ -140,7 +138,6 @@ const Contact = () => {
         />
       </a>
 
-      {/* Nút Facebook */}
       <a
         aria-label="Liên hệ qua Facebook"
         className="w-14 h-14 bg-blue-500 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 transition-colors"
@@ -151,7 +148,6 @@ const Contact = () => {
         <Icon className="w-8 h-8 text-white" icon="ic:baseline-facebook" />
       </a>
 
-      {/* Nút Gmail (mở modal) */}
       <button
         aria-label="Liên hệ qua Gmail"
         className="w-14 h-14 bg-blue-500 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 transition-colors"
@@ -160,7 +156,6 @@ const Contact = () => {
         <Icon className="w-8 h-8 text-white" icon="ic:baseline-mail" />
       </button>
 
-      {/* Modal cho Gmail sử dụng HeroUI */}
       <Modal
         className="max-w-md mx-auto p-2 bg-white shadow-lg border border-gray-300"
         isOpen={isModalOpen}
@@ -176,11 +171,11 @@ const Contact = () => {
                 <div className="w-1/2">
                   <input
                     className="mt-1 block w-full p-2 border border-gray-300 rounded-none focus:ring-indigo-500 focus:border-indigo-500"
-                    id="name"
-                    name="name"
+                    id={ContactFields.name}
+                    name={ContactFields.name}
                     placeholder="Nhập tên của bạn"
                     type="text"
-                    value={formData.name}
+                    value={contactData.name}
                     onChange={handleChange}
                   />
                   {errors.name && (
@@ -190,11 +185,11 @@ const Contact = () => {
                 <div className="w-1/2">
                   <input
                     className="mt-1 block w-full p-2 border border-gray-300 rounded-none focus:ring-indigo-500 focus:border-indigo-500"
-                    id="phone"
-                    name="phone"
+                    id={ContactFields.phone}
+                    name={ContactFields.phone}
                     placeholder="Nhập số điện thoại (10-11 số)"
                     type="tel"
-                    value={formData.phone}
+                    value={contactData.phone}
                     onChange={handleChange}
                   />
                   {errors.phone && (
@@ -205,11 +200,11 @@ const Contact = () => {
               <div>
                 <input
                   className="mt-1 block w-full p-2 border border-gray-300 rounded-none focus:ring-indigo-500 focus:border-indigo-500"
-                  id="email"
-                  name="email"
+                  id={ContactFields.email}
+                  name={ContactFields.email}
                   placeholder="Nhập email của bạn"
                   type="email"
-                  value={formData.email}
+                  value={contactData.email}
                   onChange={handleChange}
                 />
                 {errors.email && (
@@ -219,11 +214,11 @@ const Contact = () => {
               <div>
                 <textarea
                   className="mt-1 block w-full p-2 border border-gray-300 rounded-none focus:ring-indigo-500 focus:border-indigo-500"
-                  id="content"
-                  name="content"
+                  id={ContactFields.content}
+                  name={ContactFields.content}
                   placeholder="Nhập nội dung của bạn"
                   rows={2}
-                  value={formData.content}
+                  value={contactData.content}
                   onChange={handleChange}
                 />
                 {errors.content && (

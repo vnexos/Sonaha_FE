@@ -37,7 +37,7 @@ export function Providers({ children, themeProps }: Readonly<ProvidersProps>) {
             <AuthProvider>{children}</AuthProvider>
           </Provider>
         </BackdropProvider>
-        <ToastProvider placement="bottom-center" />
+        <ToastProvider placement="bottom-right" />
       </NextThemesProvider>
     </HeroUIProvider>
   );
