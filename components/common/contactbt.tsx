@@ -17,7 +17,7 @@ import { ContactData, ContactErrors, ContactFields } from "@/types";
 const Contact = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [contactData, setFormData] = useState<ContactData>({
+  const [contactData, setcontactData] = useState<ContactData>({
     email: "",
     name: "",
     phone: "",
@@ -85,14 +85,14 @@ const Contact = () => {
     const { name, value } = e.target;
     const field = name as ContactFields;
 
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setcontactData((prev) => ({ ...prev, [field]: value }));
     setErrors((prev) => ({ ...prev, [field]: undefined }));
   };
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
     setIsModalOpen(false);
-    setFormData({
+    setcontactData({
       email: "",
       name: "",
       phone: "",
