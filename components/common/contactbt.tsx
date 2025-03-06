@@ -6,6 +6,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@heroui/modal"; // Import từ HeroUI
+import { addToast } from "@heroui/toast";
 import { Icon } from "@iconify/react"; // Import Icon component từ Iconify
 import { useEffect, useState } from "react";
 
@@ -101,15 +102,16 @@ const Contact = () => {
     if (validateForm()) {
       try {
         // Gửi dữ liệu qua API
-        const response = await sendContact(formData).unwrap();
+        await sendContact(formData).unwrap();
+        addToast({
+          title: "Đăng kí nhận tin thành công",
+          description: "Chúng tôi sẽ sớm thông tin cho bạn",
+          color: "success",
+        
+        });
 
-        console.log(response);
-        alert("Gửi thông tin thành công!");
         closeModal();
-      } catch (error) {
-        console.error("Lỗi khi gửi thông tin:", error);
-        alert("Có lỗi xảy ra khi gửi thông tin. Vui lòng thử lại!");
-      }
+      } catch {}
     }
   };
 

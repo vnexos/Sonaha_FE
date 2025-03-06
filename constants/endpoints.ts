@@ -15,5 +15,9 @@ const contactEndpoint = {
   DELETE_CONTACT: `${API_PREFIX}/contact{id}`,
 };
 
-export { authEndpoint, contactEndpoint, propritiesEndpoint };
+const provinceEndpoint = {
+  GET_ALL_PROVINCE: `${API_PREFIX}/province`,
+};
+
+export { authEndpoint, contactEndpoint, propritiesEndpoint, provinceEndpoint };
 
