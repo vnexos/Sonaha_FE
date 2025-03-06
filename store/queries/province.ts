@@ -10,13 +10,13 @@ export const provinceApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
-    getDistricts: builder.query<any, string>({
+    getDistricts: builder.mutation<any, string>({
       query: (provinceID) => ({
         url: provinceEndpoint.GET_DISTRICTS.replace("{provinceID}", provinceID),
         method: "GET",
       }),
     }),
-    getWards: builder.query<any, string>({
+    getWards: builder.mutation<any, string>({
       query: (districtID) => ({
         url: provinceEndpoint.GET_WARDS.replace("{districtID}", districtID),
         method: "GET",
@@ -25,5 +25,5 @@ export const provinceApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetProvinceQuery, useGetDistrictsQuery, useGetWardsQuery } =
+export const { useGetProvinceQuery, useGetWardsMutation, useGetDistrictsMutation } =
   provinceApi;

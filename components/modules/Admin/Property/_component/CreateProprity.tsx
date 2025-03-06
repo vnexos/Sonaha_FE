@@ -11,15 +11,15 @@ import {
 } from "@heroui/modal";
 import { Select, SelectItem } from "@heroui/select";
 import { addToast } from "@heroui/toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { PropertyType } from "../../../../../types/admin/proprity-type";
 
 import { useCreateProprityMutation } from "@/store/queries/proprities";
 import {
-  useGetDistrictsQuery,
+  useGetDistrictsMutation,
   useGetProvinceQuery,
-  useGetWardsQuery,
+  useGetWardsMutation,
 } from "@/store/queries/province";
 
 interface CreatePropertyProps {
@@ -59,13 +59,13 @@ export const CreateProperty = ({
   const [ward, setWard] = useState<string>("");
 
   const { data: provinces, isLoading: loadingProvince } = useGetProvinceQuery();
-  const { data: districts, isLoading: loadingDistrict } = useGetDistrictsQuery(
-    province,
-    { skip: !province },
-  );
-  const { data: wards, isLoading: loadingWard } = useGetWardsQuery(district, {
-    skip: !district,
-  });
+  const [getDistricts, { data: districts, isLoading: loadingDistrict }] =
+    useGetDistrictsMutation();
+  const [getWards, { data: wards, isLoading: loadingWard }] =
+    useGetWardsMutation();
+
+  console.log(wards);
+
   const balconyDirectionMap: Record<string, string> = {
     Bắc: "North",
     "Đông Bắc": "Northeast",
@@ -87,11 +87,26 @@ export const CreateProperty = ({
     Tây: "West",
     "Tây Bắc": "Northwest",
   };
+
   const statusMap: Record<string, string> = {
     "Có sẵn": "available",
     "Đã bán": "sold",
     "Đang chờ": "pending",
   };
+
+  // Fetch districts when province changes
+  useEffect(() => {
+    if (province) {
+      getDistricts(province);
+    }
+  }, [province, getDistricts]);
+
+  // Fetch wards when district changes
+  useEffect(() => {
+    if (district) {
+      getWards(district);
+    }
+  }, [district, getWards]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -106,6 +121,7 @@ export const CreateProperty = ({
           : value,
     }));
   };
+
   const [createProperty] = useCreateProprityMutation();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -118,9 +134,9 @@ export const CreateProperty = ({
       }));
     }
   };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     const formDataInEnglish = {
       ...formData,
       status: statusMap[formData.status ?? ""] || formData.status,
@@ -155,7 +171,8 @@ export const CreateProperty = ({
       });
       onSubmit(formDataInEnglish);
       onClose();
-    } catch {
+    } catch (error) {
+      console.log("Error:", error);
       addToast({
         title: "Lỗi",
         description: "Thêm mới Dự Án không thành công",
@@ -191,7 +208,6 @@ export const CreateProperty = ({
                 value={formData.public_price?.toString() ?? "0"}
                 onChange={handleChange}
               />
-
               <Input
                 required
                 label="Giá vốn"
@@ -200,7 +216,6 @@ export const CreateProperty = ({
                 value={formData.cost_price?.toString() ?? "0"}
                 onChange={handleChange}
               />
-
               <Input
                 required
                 label="Diện tích (m²)"
@@ -209,7 +224,6 @@ export const CreateProperty = ({
                 value={formData.area?.toString() ?? "0"}
                 onChange={handleChange}
               />
-
               <Select
                 required
                 label="Trạng thái"
@@ -225,7 +239,6 @@ export const CreateProperty = ({
                   <SelectItem key={status}>{status}</SelectItem>
                 ))}
               </Select>
-
               <Select
                 required
                 label="Hướng ban công"
@@ -255,7 +268,6 @@ export const CreateProperty = ({
                   <SelectItem key={direction}>{direction}</SelectItem>
                 ))}
               </Select>
-
               <Select
                 required
                 label="Giấy tờ pháp lý"
@@ -269,7 +281,7 @@ export const CreateProperty = ({
                   setFormData({ ...formData, legal_status: selectedKey });
                 }}
               >
-                {["Có sổ đổ", "Không có sổ đỏ"].map((legal_status) => (
+                {["Có sổ đỏ", "Không có sổ đỏ"].map((legal_status) => (
                   <SelectItem key={legal_status}>{legal_status}</SelectItem>
                 ))}
               </Select>
@@ -284,7 +296,7 @@ export const CreateProperty = ({
                   setFormData({ ...formData, furniture: selectedKey });
                 }}
               >
-                {["Đầy đủ nổi thất", "Trang Trí ", "Chưa Nội Thất"].map(
+                {["Đầy đủ nội thất", "Trang Trí", "Chưa Nội Thất"].map(
                   (furniture) => (
                     <SelectItem key={furniture}>{furniture}</SelectItem>
                   ),
@@ -326,7 +338,6 @@ export const CreateProperty = ({
                 selectedKeys={[province]}
                 onSelectionChange={(keys) => {
                   const selectedKey = Array.from(keys)[0] as string;
-
                   const selectedProvince = provinces?.find(
                     (item: any) => item.code === selectedKey,
                   );
@@ -345,11 +356,9 @@ export const CreateProperty = ({
                   <SelectItem key={item.code}>{item.name}</SelectItem>
                 ))}
               </Select>
-
-              {/* Chọn Huyện */}
               <Select
                 required
-                isDisabled={!province} // Vô hiệu hóa nếu chưa chọn tỉnh
+                isDisabled={!province}
                 isLoading={loadingDistrict}
                 label="Quận/Huyện"
                 selectedKeys={[district]}
@@ -358,10 +367,10 @@ export const CreateProperty = ({
                   const selectedDis = districts?.find(
                     (item: any) => item.code === selectedKey,
                   );
-                  const selectedName = selectedDis.name;
+                  const selectedName = selectedDis?.name || "";
 
                   setDistrict(selectedKey);
-                  setWard(""); // Reset xã khi chọn huyện mới
+                  setWard("");
                   setFormData({ ...formData, district: selectedName });
                 }}
               >
@@ -369,22 +378,20 @@ export const CreateProperty = ({
                   <SelectItem key={item.code}>{item.name}</SelectItem>
                 ))}
               </Select>
-
-              {/* Chọn Xã */}
               <Select
                 required
-                isDisabled={!district} // Vô hiệu hóa nếu chưa chọn huyện
+                isDisabled={!district}
                 isLoading={loadingWard}
                 label="Phường/Xã"
                 selectedKeys={[ward]}
                 onSelectionChange={(keys) => {
                   const selectedKey = Array.from(keys)[0] as string;
-                  const selectedward = wards?.find(
+                  const selectedWard = wards?.find(
                     (item: any) => item.code === selectedKey,
                   );
 
                   setWard(selectedKey);
-                  setFormData({ ...formData, ward: selectedward.name });
+                  setFormData({ ...formData, ward: selectedWard?.name || "" });
                 }}
               >
                 {wards?.map((item: any) => (
@@ -422,7 +429,6 @@ export const CreateProperty = ({
                 onChange={handleChange}
               />
             </div>
-
             <div className="mt-4">
               <textarea
                 required
@@ -435,7 +441,6 @@ export const CreateProperty = ({
               />
             </div>
           </ModalBody>
-
           <ModalFooter>
             <Button color="danger" variant="light" onPress={onClose}>
               Cancel

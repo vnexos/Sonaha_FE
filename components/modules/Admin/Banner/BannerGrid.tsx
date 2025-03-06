@@ -88,10 +88,10 @@ const BannerGrid = () => {
       refetch();
       setIsCreateModalOpen(false);
       resetForm();
-    } catch (error: any) {
+    } catch {
       addToast({
         title: "Lỗi",
-        description: error.data?.message || "Tạo banner không thành công",
+        description: "Tạo banner không thành công",
         color: "danger",
       });
     }

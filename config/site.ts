@@ -12,10 +12,6 @@ export const siteConfig = {
       label: "Giới thiệu",
       href: "/gioi-thieu",
     },
-    {
-      label: "Quyền lợi",
-      href: "/quyen-loi",
-    },
   ],
   links: {},
 };

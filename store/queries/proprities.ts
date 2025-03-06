@@ -26,6 +26,7 @@ export const propritiesApi = baseApi.injectEndpoints({
         url: propritiesEndpoint.CRAETE_PROPERTY,
         method: "POST",
         body: newProprity,
+        formData: true,
       }),
       extraOptions: {
         onSuccess: () => {

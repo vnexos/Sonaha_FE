@@ -28,11 +28,17 @@ const authEndpoint = {
   DETAIL: `${API_PREFIX}/auth/detail`,
   CHECK_TOKEN: `${API_PREFIX}/auth/checkToken?token={token}`,
 };
+const contactEndpoint = {
+  SEND_CONTACT: `${API_PREFIX}/contact`,
+  GET_CONTACT: `${API_PREFIX}/contact`,
+  DELETE_CONTACT: `${API_PREFIX}/contact{id}`,
+};
 
 export {
   albumEndpoint,
   authEndpoint,
   bannerEndpoint,
+  contactEndpoint,
   propritiesEndpoint,
   provinceEndpoint
 };

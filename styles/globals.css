@@ -23,3 +23,7 @@
 *::-webkit-scrollbar-button {
   display:none;
 }
+:root {
+  --font-sans: "Montserrat", sans-serif;
+  --font-mono: "Menlo", monospace;
+}
