@@ -56,3 +56,16 @@ export type ContactErrors = {
   phone?: string;
   content?: string;
 };
+export const columns = [
+  { key: "property_id", label: "Mã BĐS" },
+  { key: "name", label: "Tên Bất Động Sản" },
+  { key: "address", label: "Địa Chỉ" },
+  { key: "public_price", label: "Giá Công Khai" },
+  { key: "area", label: "Diện Tích (m²)" },
+  { key: "status", label: "Trạng Thái" },
+  { key: "number_of_bedrooms", label: "Số Phòng Ngủ" },
+  { key: "number_of_bathrooms", label: "Số Phòng Tắm" },
+  { key: "legal_status", label: "Tình Trạng Pháp Lý" },
+  { key: "province", label: "Tỉnh/Thành Phố" },
+  { key: "created_at", label: "Ngày Tạo" },
+];
