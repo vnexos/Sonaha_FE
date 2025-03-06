@@ -1,0 +1,40 @@
+export type PropertyType = {
+  property_id: number;
+  name: string;
+  description: string;
+  public_price: number;
+  area: number;
+  status: string;
+  thumbnail_url: string;
+  created_at: string;
+  updated_at: string;
+  cost_price: number;
+  province: string;
+  district: string;
+  ward: string;
+  img?: string | File;
+  coordinates: null | string;
+  house_direction: string;
+  number_of_bedrooms: number;
+  legal_status: string;
+  balcony_direction: string;
+  number_of_bathrooms: number;
+  furniture: string;
+  house_number: string;
+  description_detail: string;
+  price_difference: number | null;
+  address: string | null;
+  transactions: any[];
+  save: any[];
+  property_images: Array<{
+    image_id: number;
+    property_id: number;
+    image_url: string;
+    uploaded_at: Date;
+  }>;
+  type_properties: Array<{
+    typePropertiesId: number;
+    propertyId: number;
+    typePropertiesName: string;
+  }>;
+};

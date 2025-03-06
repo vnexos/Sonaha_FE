@@ -9,6 +9,8 @@ import { useRouter } from "next/navigation";
 import * as React from "react";
 import { Provider } from "react-redux";
 
+import AuthProvider from "@/components/common/auth-provider";
+import { BackdropProvider } from "@/components/common/backdrop";
 import { store } from "@/store";
 
 export interface ProvidersProps {
@@ -24,14 +26,18 @@ declare module "@react-types/shared" {
   }
 }
 
-export function Providers({ children, themeProps }: ProvidersProps) {
+export function Providers({ children, themeProps }: Readonly<ProvidersProps>) {
   const router = useRouter();
 
   return (
     <HeroUIProvider navigate={router.push}>
       <NextThemesProvider {...themeProps}>
-        <ToastProvider />
-        <Provider store={store}>{children}</Provider>
+        <BackdropProvider>
+          <Provider store={store}>
+            <AuthProvider>{children}</AuthProvider>
+          </Provider>
+        </BackdropProvider>
+        <ToastProvider placement="bottom-right" />
       </NextThemesProvider>
     </HeroUIProvider>
   );

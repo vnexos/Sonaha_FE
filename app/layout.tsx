@@ -4,7 +4,6 @@ import { Metadata, Viewport } from "next";
 
 import { Providers } from "./providers";
 
-import { Navbar } from "@/components/common/navbar";
 import { fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
 
@@ -26,13 +25,13 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({
-  children,
-}: {
+interface RootLayoutProps {
   children: React.ReactNode;
-}) {
+}
+
+export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
-    <html suppressHydrationWarning lang="en">
+    <html suppressHydrationWarning className="!pr-0" lang="en">
       <head />
       <body
         className={clsx(
@@ -41,10 +40,7 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
-          <div className="relative flex flex-col h-screen">
-            <Navbar />
-            <main className="flex-grow">{children}</main>
-          </div>
+          {children}
         </Providers>
       </body>
     </html>

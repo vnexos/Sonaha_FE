@@ -5,7 +5,7 @@ interface LogoProps {
   size?: number;
 }
 
-function Logo({ size }: LogoProps) {
+function Logo({ size }: Readonly<LogoProps>) {
   return (
     <Image
       classNames={{

@@ -2,13 +2,12 @@
 
 import { useEffect } from "react";
 
-export default function Error({
-  error,
-  reset,
-}: {
+interface ErrorPageProps {
   error: Error;
   reset: () => void;
-}) {
+}
+
+export default function ErrorPage({ error, reset }: Readonly<ErrorPageProps>) {
   useEffect(() => {
     // Log the error to an error reporting service
     /* eslint-disable no-console */

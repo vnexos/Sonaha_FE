@@ -33,11 +33,11 @@ module.exports = {
           background: '#FFFFFF',
           foreground: '#000000',
           primary: {
-            DEFAULT: '#ff0000',
+            DEFAULT: '#ffd300',
             foreground: '#FFFFFF',
           },
           secondary: {
-            DEFAULT: '#10B981',
+            DEFAULT: '#00a86b',
             foreground: '#FFFFFF',
           },
         },
