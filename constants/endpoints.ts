@@ -20,4 +20,3 @@ const provinceEndpoint = {
 };
 
 export { authEndpoint, contactEndpoint, propritiesEndpoint, provinceEndpoint };
-

@@ -1,4 +1,5 @@
 "use client";
+import { Image } from "@heroui/image";
 import {
   Modal,
   ModalBody,
@@ -132,7 +133,7 @@ const Contact = () => {
         rel="noopener noreferrer"
         target="_blank"
       >
-        <img
+        <Image
           alt="Zalo Icon"
           className="w-8 h-8 text-white rounded-full"
           src="https://sonagift.vn/upload/photo/images-1730705270.png"

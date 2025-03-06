@@ -26,4 +26,8 @@ export const contactApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAllContactQuery, useSendContactMutation,useDeleteContactMutation } = contactApi;
+export const {
+  useGetAllContactQuery,
+  useSendContactMutation,
+  useDeleteContactMutation,
+} = contactApi;

@@ -8,7 +8,7 @@ export default function layout({ children }: { children: ReactNode }) {
     <div className="relative flex flex-col h-screen">
       <Navbar />
       <main className="flex-grow">{children}</main>
-      <Contact/>
+      <Contact />
     </div>
   );
 }
