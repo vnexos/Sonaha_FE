@@ -16,7 +16,6 @@ interface Province {
 export default function SidebarNav() {
   const router = useRouter();
   const [inputValue, setInputValue] = useState<string>("");
-  const [, setSelectedProvince] = useState<string | null>(null);
 
   const { dataProvince } = useGetProvinceQuery(undefined, {
     selectFromResult: (res: any) => ({
@@ -35,7 +34,6 @@ export default function SidebarNav() {
   };
 
   const handleChangeProvince = (province: string) => {
-    setSelectedProvince(province);
     router.push(`/du-an?province=${province}`);
   };
 

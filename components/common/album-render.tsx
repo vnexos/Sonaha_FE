@@ -1,6 +1,7 @@
 "use client";
 
 import { Icon } from "@iconify/react";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 interface AlbumRendererProps {
@@ -67,9 +68,8 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
         {isVideo ? (
           <>
             {!isPlaying && (
-              <div
+              <button
                 className="absolute inset-0 flex items-center justify-center cursor-pointer"
-                role="button"
                 tabIndex={0}
                 onClick={handleVideoPlay}
                 onKeyDown={(e) => e.key === "Enter" && handleVideoPlay()}
@@ -79,7 +79,7 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
                   className="relative w-12 h-12 text-white opacity-90 hover:opacity-100 transition-opacity"
                   icon="material-symbols:play-arrow-rounded"
                 />
-              </div>
+              </button>
             )}
             <video
               controls
@@ -94,7 +94,7 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
             </video>
           </>
         ) : (
-          <img
+          <Image
             alt={`Property ${index + 1}`}
             className="w-full h-full object-contain"
             loading="lazy"
@@ -220,7 +220,7 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
                   onKeyDown={(e) => e.key === "Enter" && setCurrentIndex(index)}
                 >
                   <div className="relative w-full h-full rounded-lg overflow-hidden bg-black">
-                    <img
+                    <Image
                       alt={`Thumbnail ${index + 1}`}
                       className="w-full h-full object-cover"
                       loading="lazy"

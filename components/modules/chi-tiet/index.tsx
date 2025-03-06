@@ -106,26 +106,24 @@ export default function DetailProperties() {
       />
       {/* Nút chuyển đổi giữa card và mô tả chi tiết */}
       <div className="flex gap-4">
-        <div
+        <button
           className={`cursor-pointer text-lg font-medium ${
             activeSection === "card"
               ? "text-red-500 border-b-4 border-orange-500 pb-2"
               : "text-gray-500"
           }`}
-          role="button"
           tabIndex={0}
           onClick={() => setActiveSection("card")}
           onKeyDown={(e) => e.key === "Enter" && setActiveSection("card")}
         >
           Thông tin chi tiết
-        </div>
-        <div
+        </button>
+        <button
           className={`cursor-pointer text-lg font-medium ${
             activeSection === "description"
               ? "text-red-500 border-b-4 border-orange-500 pb-2"
               : "text-gray-500"
           }`}
-          role="button"
           tabIndex={0}
           onClick={() => setActiveSection("description")}
           onKeyDown={(e) =>
@@ -133,7 +131,7 @@ export default function DetailProperties() {
           }
         >
           Mô tả chi tiết
-        </div>
+        </button>
       </div>
 
       {/* Hiển thị phần card hoặc mô tả chi tiết dựa trên state */}
