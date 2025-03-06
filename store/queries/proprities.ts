@@ -58,6 +58,36 @@ export const propritiesApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    getFilterApi: builder.query<
+      any,
+      {
+        type?: string;
+        page?: number;
+        limit?: number;
+        province?: string;
+        district?: string;
+        price?: string;
+      }
+    >({
+      query: (params) => ({
+        url: propritiesEndpoint.FILTER_PROPERTIES,
+        method: "GET",
+        params: {
+          type: params.type,
+          page: params.page,
+          limit: params.limit,
+          province: params.province,
+          district: params.district,
+          price: params.price,
+        },
+      }),
+    }),
+    getDetailProperties: builder.query<any, any>({
+      query: (id) => ({
+        url: propritiesEndpoint.DETAIL_PROPERTIES.replaceAll("{id}", id),
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -67,4 +97,6 @@ export const {
   useCreateProprityMutation,
   useDeletePropertyMutation,
   useUpdatePropertyMutation,
+  useGetFilterApiQuery,
+  useGetDetailPropertiesQuery,
 } = propritiesApi;

@@ -64,8 +64,6 @@ export const CreateProperty = ({
   const [getWards, { data: wards, isLoading: loadingWard }] =
     useGetWardsMutation();
 
-  console.log(wards);
-
   const balconyDirectionMap: Record<string, string> = {
     Bắc: "North",
     "Đông Bắc": "Northeast",
@@ -171,8 +169,7 @@ export const CreateProperty = ({
       });
       onSubmit(formDataInEnglish);
       onClose();
-    } catch (error) {
-      console.log("Error:", error);
+    } catch {
       addToast({
         title: "Lỗi",
         description: "Thêm mới Dự Án không thành công",
