@@ -55,7 +55,9 @@ const Contact = () => {
     if (!formData.email.trim()) {
       newErrors.email = "Email không được để trống";
       isValid = false;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    } else if (
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)
+    ) {
       newErrors.email = "Email không hợp lệ";
       isValid = false;
     }
@@ -107,7 +109,6 @@ const Contact = () => {
           title: "Đăng kí nhận tin thành công",
           description: "Chúng tôi sẽ sớm thông tin cho bạn",
           color: "success",
-        
         });
 
         closeModal();
