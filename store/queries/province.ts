@@ -25,5 +25,8 @@ export const provinceApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetProvinceQuery, useGetWardsMutation, useGetDistrictsMutation } =
-  provinceApi;
+export const {
+  useGetProvinceQuery,
+  useGetWardsMutation,
+  useGetDistrictsMutation,
+} = provinceApi;

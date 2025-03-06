@@ -6,6 +6,8 @@ const propritiesEndpoint = {
   CRAETE_PROPERTY: `${API_PREFIX}/proprities/createProprityDto`,
   Del_ID_PROPRITIES: `${API_PREFIX}/proprities/deleteProperties/{ID}`,
   UPDATE_ID_PROPRITIES: `${API_PREFIX}/proprities/update-property/{ID}`,
+  FILTER_PROPERTIES: `${API_PREFIX}/filtersearch/filterTinhThanhTypeKhoangGia`,
+  DETAIL_PROPERTIES: `/proprities/{id}`,
 };
 
 const bannerEndpoint = {
@@ -40,6 +42,5 @@ export {
   bannerEndpoint,
   contactEndpoint,
   propritiesEndpoint,
-  provinceEndpoint
+  provinceEndpoint,
 };
-
