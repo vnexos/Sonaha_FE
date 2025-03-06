@@ -9,9 +9,14 @@ const authEndpoint = {
   DETAIL: `${API_PREFIX}/auth/detail`,
   CHECK_TOKEN: `${API_PREFIX}/auth/checkToken?token={token}`,
 };
+const contactEndpoint = {
+  SEND_CONTACT: `${API_PREFIX}/contact`,
+  GET_CONTACT: `${API_PREFIX}/contact`,
+  DELETE_CONTACT: `${API_PREFIX}/contact{id}`,
+};
 
 const provinceEndpoint = {
   GET_ALL_PROVINCE: `${API_PREFIX}/province`,
 };
 
-export { authEndpoint, propritiesEndpoint, provinceEndpoint };
+export { authEndpoint, contactEndpoint, propritiesEndpoint, provinceEndpoint };
