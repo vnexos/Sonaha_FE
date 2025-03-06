@@ -6,15 +6,11 @@ export const siteConfig = {
   navItems: [
     {
       label: "Dự án",
-      href: "/dự-án",
+      href: "/du-an",
     },
     {
       label: "Giới thiệu",
-      href: "/giới-thiệu",
-    },
-    {
-      label: "Quyền lợi",
-      href: "/quyền-lợi",
+      href: "/gioi-thieu",
     },
   ],
   links: {},
