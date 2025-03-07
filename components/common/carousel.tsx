@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 export interface CarouselImage {
   id: number;
-  url: string;
+  src: string;
   name: string;
   title: string;
   des: string;
@@ -25,6 +25,8 @@ export default function Carousel({ images }: Readonly<CarouselProps>) {
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
+
+  console.log(images);
 
   const privateNextSlide = useCallback(
     () => setIndex((prev) => (prev + 1) % images.length),
@@ -76,7 +78,7 @@ export default function Carousel({ images }: Readonly<CarouselProps>) {
     >
       {images.map((img, i) => (
         <div
-          key={img.id}
+          key={i}
           className={`absolute inset-0 h-full transition-transform duration-700 ease-in-out z-0 ${
             i === index ? "translate-x-0" : "translate-x-full"
           }`}
@@ -91,7 +93,7 @@ export default function Carousel({ images }: Readonly<CarouselProps>) {
               blurredImg: "rounded-none",
             }}
             fallbackSrc={img.fallbackUrl}
-            src={img.url}
+            src={img.src}
           />
           <div className="absolute bottom-10 left-10 bg-[#ffffff7f] bg-opacity-50 p-4 rounded-xl text-white sm:block hidden z-[1] backdrop-blur-md">
             <h2 className="text-xl font-bold text-black">{img.title}</h2>

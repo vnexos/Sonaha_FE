@@ -18,6 +18,7 @@ import {
 import { addToast } from "@heroui/toast";
 import { User as UserDisplay } from "@heroui/user";
 import { Icon } from "@iconify/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -31,7 +32,7 @@ export default function LoginButton() {
   const [isVisible, setIsVisible] = useState(false);
   const user = useAppSelector((state) => state?.auth?.user as User);
   const dispatch = useAppDispatch();
-
+  const router = useRouter();
   const toggleVisibility = () => setIsVisible(!isVisible);
   const { handleSubmit, control, reset, setValue } = useForm<LoginRequest>({
     defaultValues: {
@@ -178,7 +179,12 @@ export default function LoginButton() {
       </DropdownTrigger>
       <DropdownMenu aria-label="User Actions" variant="flat">
         {user.role_name === "admin" ? (
-          <DropdownItem key="admin">
+          <DropdownItem
+            key="admin"
+            onPress={() => {
+              router.push("/admin");
+            }}
+          >
             <p className="font-bold">Xem trang admin</p>
           </DropdownItem>
         ) : (

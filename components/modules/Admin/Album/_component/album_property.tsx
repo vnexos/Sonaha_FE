@@ -1,6 +1,6 @@
 "use client";
+import { Image } from "@heroui/image";
 import { addToast } from "@heroui/toast";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import {
@@ -236,7 +236,6 @@ const AlbumProperty: React.FC<AlbumPropertyProps> = ({
                   </video>
                 ) : (
                   <Image
-                    unoptimized
                     alt={`Property Media ${media.image_id}`}
                     className="w-full h-40 object-cover rounded-lg"
                     height={150}

@@ -1,7 +1,7 @@
 "use client";
 
+import { Image } from "@heroui/image";
 import { Icon } from "@iconify/react";
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 interface AlbumRendererProps {
@@ -64,17 +64,18 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
     const isVideo = isVideoFile(item);
 
     return (
-      <div className="relative w-full h-full bg-black rounded-xl overflow-hidden shadow-lg">
+      <div className="relative w-full h-full overflow-hidden shadow-lg">
         {isVideo ? (
           <>
             {!isPlaying && (
               <button
+                aria-label="Play video"
                 className="absolute inset-0 flex items-center justify-center cursor-pointer"
                 tabIndex={0}
                 onClick={handleVideoPlay}
                 onKeyDown={(e) => e.key === "Enter" && handleVideoPlay()}
               >
-                <div className="absolute inset-0 bg-black opacity-50" />
+                <div className="absolute inset-0  opacity-50" />
                 <Icon
                   className="relative w-12 h-12 text-white opacity-90 hover:opacity-100 transition-opacity"
                   icon="material-symbols:play-arrow-rounded"
@@ -96,7 +97,8 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
         ) : (
           <Image
             alt={`Property ${index + 1}`}
-            className="w-full h-full object-contain"
+            className="w-full h-full object-cover"
+            classNames={{ wrapper: "h-full" }}
             loading="lazy"
             src={item}
           />
@@ -114,27 +116,35 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
     return (
       <div className="flex flex-col md:flex-row gap-1">
         {/* Hình ảnh lớn bên trái */}
-        <button
+        <div
           aria-label="View large image"
-          className="w-full md:w-2/3 h-[500px] relative cursor-pointer"
+          className="w-full md:w-2/3 h-[500px] relative cursor-pointer overflow-hidden rounded-xl shadow-lg"
+          role="button" // Thêm role để chỉ định đây là phần tử tương tác
+          tabIndex={0} // Hỗ trợ tabbing
           onClick={() => handleImageClick(0)}
-          onKeyDown={(e) => e.key === "Enter" && handleImageClick(0)}
+          onKeyDown={(e) => e.key === "Enter" && handleImageClick(0)} // Hỗ trợ keyboard
+          onTouchEnd={(e) => e.preventDefault()} // Ngăn hành vi mặc định khi nhả chạm
+          onTouchStart={(e) => {
+            // Hỗ trợ touch (bắt đầu chạm)
+            e.preventDefault();
+            handleImageClick(0);
+          }}
         >
           {renderMedia(0)}
           {/* Nút Đăng bán */}
           <div className="absolute top-4 left-4 bg-green-500 text-white px-3 py-1 rounded-lg text-sm font-medium shadow-md">
             Đăng bán
           </div>
-          <div className="absolute bottom-6 right-6 bg-black/50 text-white px-3 py-1 rounded-lg text-sm font-medium shadow-md flex items-center gap-2">
+          <div className="absolute bottom-6 right-6 bg-black/50 text-white px-3 py-1 rounded-lg text-sm font-medium flex items-center gap-2">
             <Icon className="w-5 h-5" icon="material-symbols:image-rounded" />
             <span>{propertyImages.length}</span>
           </div>
-        </button>
+        </div>
         {/* Hai hình ảnh nhỏ bên phải */}
         <div className="w-full md:w-1/3 h-[500px] flex flex-col gap-1">
           <button
             aria-label="View second image"
-            className="w-full h-1/2 relative cursor-pointer"
+            className="w-full h-1/2 relative cursor-pointer overflow-hidden rounded-xl shadow-lg"
             onClick={() => handleImageClick(1)}
             onKeyDown={(e) => e.key === "Enter" && handleImageClick(1)}
           >
@@ -142,7 +152,7 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
           </button>
           <button
             aria-label="View third image"
-            className="w-full h-1/2 relative cursor-pointer"
+            className="w-full h-1/2 relative cursor-pointer overflow-hidden rounded-xl shadow-lg"
             onClick={() => handleImageClick(2)}
             onKeyDown={(e) => e.key === "Enter" && handleImageClick(2)}
           >
@@ -219,13 +229,15 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
                   onClick={() => setCurrentIndex(index)}
                   onKeyDown={(e) => e.key === "Enter" && setCurrentIndex(index)}
                 >
-                  <div className="relative w-full h-full rounded-lg overflow-hidden bg-black">
+                  <div className="relative w-full h-full rounded-lg overflow-hidden">
                     <Image
                       alt={`Thumbnail ${index + 1}`}
                       className="w-full h-full object-cover"
+                      classNames={{ wrapper: "h-full" }}
                       loading="lazy"
                       src={item}
                     />
+
                     {isVideoFile(item) && (
                       <div className="absolute inset-0 flex items-center justify-center bg-black/50">
                         <Icon
