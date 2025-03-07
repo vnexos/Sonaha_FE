@@ -88,6 +88,13 @@ export const propritiesApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    
+    createTypeProperties: builder.mutation<any, { id: number; nameType: string }>({
+      query: ({ id, nameType }) => ({
+        url: `${propritiesEndpoint.CREATE_TYPE_PROPERTIES.replace('{id}', id.toString())}?nameType=${nameType}`,
+        method: 'POST',
+      }),
+    }),
   }),
 });
 
@@ -99,4 +106,5 @@ export const {
   useUpdatePropertyMutation,
   useGetFilterApiQuery,
   useGetDetailPropertiesQuery,
+  useCreateTypePropertiesMutation // mutaion
 } = propritiesApi;

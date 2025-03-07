@@ -127,7 +127,7 @@ const Contact = () => {
       <a
         aria-label="Liên hệ qua Zalo"
         className="w-14 h-14 bg-blue-500 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 transition-colors"
-        href="https://zalo.me/0987654321"
+        href="https://zalo.me/0853012003"
         rel="noopener noreferrer"
         target="_blank"
       >
@@ -141,7 +141,7 @@ const Contact = () => {
       <a
         aria-label="Liên hệ qua Facebook"
         className="w-14 h-14 bg-blue-500 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 transition-colors"
-        href="https://facebook.com/sonaha"
+        href="https://www.facebook.com/Lyinsinc"
         rel="noopener noreferrer"
         target="_blank"
       >

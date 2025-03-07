@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@heroui/button";
+import { Image } from "@heroui/image";
 import { Input } from "@heroui/input";
 import {
   Modal,
@@ -11,7 +12,6 @@ import {
 } from "@heroui/modal";
 import { addToast } from "@heroui/toast";
 import { Icon } from "@iconify/react";
-import Image from "next/image";
 import { useState } from "react";
 
 import { BannerType } from "./_type/banner_type";

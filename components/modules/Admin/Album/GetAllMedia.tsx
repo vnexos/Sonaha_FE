@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import { Image } from "@heroui/image";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 import AlbumProperty from "./_component/album_property";
 
@@ -52,7 +52,6 @@ const GetAllMedia = () => {
             onClick={() => handleCardClick(property.property_id)}
           >
             <Image
-              unoptimized
               alt={property.name}
               className="w-full h-48 object-cover"
               height={200}

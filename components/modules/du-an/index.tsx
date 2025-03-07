@@ -1,4 +1,5 @@
 "use client";
+
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Image } from "@heroui/image";
 import { Popover, PopoverContent, PopoverTrigger } from "@heroui/popover";
@@ -43,8 +44,11 @@ export default function DuAn() {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error loading data</div>;
+  if (isLoading) return <div className="text-center py-10">Loading...</div>;
+  if (isError)
+    return (
+      <div className="text-center py-10 text-red-500">Error loading data</div>
+    );
 
   const truncateText = (text: string, maxLength: number) => {
     if (text.length > maxLength) {
@@ -55,19 +59,19 @@ export default function DuAn() {
   };
 
   return (
-    <div className="p-28">
-      <div className="flex flex-col md:flex-row gap-4">
-        {/* Sidebar - Cố định bên trái */}
-        <div className="w-full md:w-64 flex-shrink-0">
+    <div className="px-4 py-8 md:px-8 md:py-12 lg:px-28 lg:py-16">
+      <div className="flex flex-col md:flex-row gap-6">
+        {/* Sidebar - Ẩn trên mobile, hiển thị trên md trở lên */}
+        <div className="hidden md:block md:w-64 flex-shrink-0">
           <SidebarNav />
         </div>
-        {/* Content Area - Chiếm không gian còn lại */}
+        {/* Content Area */}
         <div className="flex-1">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-2 gap-y-1">
             {filterData?.data?.paginatedResults?.map((item: any) => (
               <Card
                 key={item.propertyId}
-                className="cursor-pointer w-[300px] border border-gray-200 rounded-none shadow-sm "
+                className="cursor-pointer w-full max-w-[350px] mx-auto border border-gray-200 rounded-none shadow-sm transition-transform hover:scale-105"
                 onMouseUp={() => {
                   router.push(`/chi-tiet/${item.propertyId}`);
                 }}
@@ -75,17 +79,17 @@ export default function DuAn() {
                 <CardBody className="p-0">
                   <Image
                     alt={item.properties.name}
-                    className="object-cover rounded-none"
-                    height={180}
+                    className="object-cover w-full h-56 rounded-none"
+                    height={210}
                     src={item.properties.thumbnail_url || "/fallback-image.jpg"}
-                    width={300}
+                    width={350}
                   />
                 </CardBody>
-                <CardHeader className="p-2 flex-col items-start">
-                  <h2 className="uppercase text-medium break-words whitespace-normal w-full overflow-wrap-break-word relative">
+                <CardHeader className="p-4 flex-col items-start">
+                  <h2 className="uppercase text-sm md:text-lg break-words whitespace-normal w-full">
                     <Popover>
                       <PopoverTrigger>
-                        <span className="w-full cursor-pointer text-sm hover:underline">
+                        <span className="w-full cursor-pointer hover:underline">
                           {truncateText(item.properties.name, 20)}
                         </span>
                       </PopoverTrigger>
@@ -101,7 +105,7 @@ export default function DuAn() {
                       </PopoverContent>
                     </Popover>
                   </h2>
-                  <p className="text-xs uppercase text-gray-600">
+                  <p className="text-xs md:text-sm text-gray-600 uppercase mt-1">
                     Loại:
                     {
                       type_properties_typePropertiesName[
@@ -109,10 +113,10 @@ export default function DuAn() {
                       ]
                     }
                   </p>
-                  <small className="text-xs text-gray-500">
+                  <small className="text-xs md:text-sm text-gray-500">
                     Tỉnh/Thành phố: {item.properties.province}
                   </small>
-                  <h4 className="text-lg font-bold text-red-500 mt-1">
+                  <h4 className="text-base md:text-xl font-bold text-red-500 mt-2">
                     {item.properties.public_price?.toLocaleString() ??
                       "Liên hệ"}
                     đ
@@ -123,10 +127,10 @@ export default function DuAn() {
           </div>
 
           {/* Pagination */}
-          <div className="mt-6 flex items-center justify-center gap-2">
+          <div className="mt-8 flex items-center justify-center gap-4">
             <button
               aria-label="Previous page"
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-white transition-colors hover:bg-blue-600 disabled:bg-gray-300 disabled:hover:bg-gray-300"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-white transition-colors hover:bg-blue-600 disabled:bg-gray-300 disabled:hover:bg-gray-300"
               disabled={currentPage === 1}
               onClick={() => handlePageChange(currentPage - 1)}
             >
@@ -146,7 +150,7 @@ export default function DuAn() {
               </svg>
             </button>
 
-            <div className="flex items-center gap-1 text-gray-700">
+            <div className="flex items-center gap-2 text-gray-700 text-sm md:text-base">
               <span className="font-medium">{currentPage}</span>
               <span className="mx-1">/</span>
               <span className="text-gray-500">
@@ -156,7 +160,7 @@ export default function DuAn() {
 
             <button
               aria-label="Next page"
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-white transition-colors hover:bg-blue-600 disabled:bg-gray-300 disabled:hover:bg-gray-300"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-white transition-colors hover:bg-blue-600 disabled:bg-gray-300 disabled:hover:bg-gray-300"
               disabled={currentPage === (filterData?.data?.totalPages || 1)}
               onClick={() => handlePageChange(currentPage + 1)}
             >
