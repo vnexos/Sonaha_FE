@@ -1,3 +1,4 @@
+"use client";
 import { Image } from "@heroui/image";
 import { Icon } from "@iconify/react";
 import { useEffect, useRef, useState } from "react";
@@ -5,6 +6,52 @@ import { useEffect, useRef, useState } from "react";
 interface AlbumRendererProps {
   propertyImages: string[];
 }
+
+const ThumbnailGrid = ({
+  items,
+  currentIndex,
+  onSelect,
+  isVideoFile,
+}: {
+  items: string[];
+  currentIndex: number;
+  onSelect: (index: number) => void;
+  isVideoFile: (fileName: string) => boolean;
+}) => (
+  <div className="flex justify-center gap-4 overflow-x-auto py-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+    {items.map((item, index) => (
+      <button
+        key={`${item}-${index}`}
+        aria-label={`Select thumbnail ${index + 1}`}
+        className={`relative shrink-0 cursor-pointer transition-all duration-300 rounded-lg shadow-md ${
+          index === currentIndex
+            ? "ring-4 ring-blue-500"
+            : "opacity-80 hover:opacity-100 hover:ring-2 hover:ring-blue-300 hover:scale-105"
+        }`}
+        style={{ width: "130px", height: "130px" }}
+        onClick={() => onSelect(index)}
+      >
+        <div className="relative w-full h-full rounded-lg overflow-hidden">
+          <Image
+            alt={`Thumbnail ${index + 1}`}
+            className="w-full h-full object-cover"
+            classNames={{ wrapper: "h-full" }}
+            loading="lazy"
+            src={item}
+          />
+          {isVideoFile(item) && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+              <Icon
+                className="w-6 h-6 text-white"
+                icon="material-symbols:play-arrow-rounded"
+              />
+            </div>
+          )}
+        </div>
+      </button>
+    ))}
+  </div>
+);
 
 const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -31,26 +78,9 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
     };
   }, [isCarouselOpen]);
 
-  if (
-    !propertyImages ||
-    !Array.isArray(propertyImages) ||
-    propertyImages.length === 0
-  ) {
-    return (
-      <div className="p-4 mb-4 text-yellow-700 bg-yellow-100 rounded-lg">
-        <Icon
-          className="w-6 h-6 inline mr-2"
-          icon="material-symbols:image-rounded"
-        />
-        Không có hình ảnh để hiển thị
-      </div>
-    );
-  }
-
   const handleVideoPlay = () => setIsPlaying(true);
   const handleVideoPause = () => setIsPlaying(false);
   const videoRegex = /\.(mp4|webm|ogg)$/i;
-
   const isVideoFile = (fileName: string) => videoRegex.exec(fileName) !== null;
 
   const renderMedia = (index: number) => {
@@ -128,125 +158,81 @@ const AlbumRenderer = ({ propertyImages }: AlbumRendererProps) => {
           )}
         </div>
 
-        <div className="flex justify-center gap-4 overflow-x-auto py-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
-          {propertyImages.map((item, index) => (
-            <button
-              key={item}
-              aria-label={`Select thumbnail ${index + 1}`}
-              className={`relative shrink-0 cursor-pointer transition-all duration-300 rounded-lg shadow-md ${
-                index === currentIndex
-                  ? "ring-4 ring-blue-500"
-                  : "opacity-80 hover:opacity-100 hover:ring-2 hover:ring-blue-300 hover:scale-105"
-              }`}
-              style={{ width: "130px", height: "130px" }}
-              onClick={() => setCurrentIndex(index)}
-            >
-              <div className="relative w-full h-full rounded-lg overflow-hidden">
-                <Image
-                  alt={`Thumbnail ${index + 1}`}
-                  className="w-full h-full object-cover"
-                  classNames={{ wrapper: "h-full" }}
-                  loading="lazy"
-                  src={item}
-                />
-                {isVideoFile(item) && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                    <Icon
-                      className="w-6 h-6 text-white"
-                      icon="material-symbols:play-arrow-rounded"
-                    />
-                  </div>
-                )}
-              </div>
-            </button>
-          ))}
-        </div>
+        <ThumbnailGrid
+          currentIndex={currentIndex}
+          isVideoFile={isVideoFile}
+          items={propertyImages}
+          onSelect={setCurrentIndex}
+        />
       </div>
     );
   };
 
-  const renderCarousel = () => {
-    return (
-      <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-        <div
-          ref={carouselRef}
-          className="relative w-full max-w-4xl overflow-hidden rounded-xl p-6 shadow-xl bg-white"
-          style={{ aspectRatio: "9/16", maxHeight: "85vh" }}
+  const renderCarousel = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+      <div
+        ref={carouselRef}
+        className="relative w-full max-w-4xl overflow-hidden rounded-xl p-6 shadow-xl bg-white"
+        style={{ aspectRatio: "9/16", maxHeight: "85vh" }}
+      >
+        <button
+          aria-label="Close carousel"
+          className="absolute top-4 right-4 text-gray-800 text-2xl font-bold hover:text-gray-600 transition-colors"
+          onClick={() => setIsCarouselOpen(false)}
         >
-          <button
-            aria-label="Close carousel"
-            className="absolute top-4 right-4 text-gray-800 text-2xl font-bold hover:text-gray-600 transition-colors"
-            onClick={() => setIsCarouselOpen(false)}
-          >
-            ×
-          </button>
-          <button
-            aria-label="Previous image"
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-md hover:bg-gray-200 transition-colors z-10"
-            onClick={() =>
-              setCurrentIndex(
-                (prev) =>
-                  (prev - 1 + propertyImages.length) % propertyImages.length,
-              )
-            }
-          >
-            <Icon
-              className="w-6 h-6 text-gray-800"
-              icon="material-symbols:arrow-circle-left-rounded"
-            />
-          </button>
-          <button
-            aria-label="Next image"
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-md hover:bg-gray-200 transition-colors z-10"
-            onClick={() =>
-              setCurrentIndex((prev) => (prev + 1) % propertyImages.length)
-            }
-          >
-            <Icon
-              className="w-6 h-6 text-gray-800"
-              icon="material-symbols:arrow-circle-right-rounded"
-            />
-          </button>
-          <div className="relative w-full h-full">
-            {renderMedia(currentIndex)}
-            <div className="mt-6 flex justify-center gap-4 overflow-x-auto py-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
-              {propertyImages.map((item, index) => (
-                <button
-                  key={item}
-                  aria-label={`Select thumbnail ${index + 1}`}
-                  className={`relative shrink-0 cursor-pointer transition-all duration-300 rounded-lg shadow-md ${
-                    index === currentIndex
-                      ? "ring-4 ring-blue-500"
-                      : "opacity-80 hover:opacity-100 hover:ring-2 hover:ring-blue-300 hover:scale-105"
-                  }`}
-                  style={{ width: "130px", height: "130px" }}
-                  onClick={() => setCurrentIndex(index)}
-                >
-                  <div className="relative w-full h-full rounded-lg overflow-hidden">
-                    <Image
-                      alt={`Thumbnail ${index + 1}`}
-                      className="w-full h-full object-cover"
-                      classNames={{ wrapper: "h-full" }}
-                      loading="lazy"
-                      src={item}
-                    />
-                    {isVideoFile(item) && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                        <Icon
-                          className="w-6 h-6 text-white"
-                          icon="material-symbols:play-arrow-rounded"
-                        />
-                      </div>
-                    )}
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
+          ×
+        </button>
+        <button
+          aria-label="Previous image"
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-md hover:bg-gray-200 transition-colors z-10"
+          onClick={() =>
+            setCurrentIndex(
+              (prev) =>
+                (prev - 1 + propertyImages.length) % propertyImages.length,
+            )
+          }
+        >
+          <Icon
+            className="w-6 h-6 text-gray-800"
+            icon="material-symbols:arrow-circle-left-rounded"
+          />
+        </button>
+        <button
+          aria-label="Next image"
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-md hover:bg-gray-200 transition-colors z-10"
+          onClick={() =>
+            setCurrentIndex((prev) => (prev + 1) % propertyImages.length)
+          }
+        >
+          <Icon
+            className="w-6 h-6 text-gray-800"
+            icon="material-symbols:arrow-circle-right-rounded"
+          />
+        </button>
+        <div className="relative w-full h-full">
+          {renderMedia(currentIndex)}
+          <ThumbnailGrid
+            currentIndex={currentIndex}
+            isVideoFile={isVideoFile}
+            items={propertyImages}
+            onSelect={setCurrentIndex}
+          />
         </div>
       </div>
+    </div>
+  );
+
+  if (!propertyImages?.length) {
+    return (
+      <div className="p-4 mb-4 text-yellow-700 bg-yellow-100 rounded-lg">
+        <Icon
+          className="w-6 h-6 inline mr-2"
+          icon="material-symbols:image-rounded"
+        />
+        Không có hình ảnh để hiển thị
+      </div>
     );
-  };
+  }
 
   return (
     <div className="text-center space-y-4 w-full max-w-6xl mx-auto p-4">
