@@ -36,6 +36,7 @@ const GetAllProperties = () => {
     null,
   );
   const [selectedType, setSelectedType] = useState<string>("Apartment"); // Default type
+
   const {
     data: properties,
     isLoading,
@@ -86,7 +87,6 @@ const GetAllProperties = () => {
 
   const handleCreateType = async () => {
     if (selectedPropertyId === null) return;
-
     try {
       await createTypeProperty({
         id: selectedPropertyId,
@@ -108,6 +108,26 @@ const GetAllProperties = () => {
     }
   };
 
+  // Tách biểu thức ternary lồng ghép thành hàm riêng
+  const renderTypePropertiesCell = (property: PropertyType) => {
+    if (property.type_properties?.length > 0) {
+      return property.type_properties[0].typePropertiesName; // Assuming typePropertiesName is a string or enum key
+    }
+
+    return (
+      <Button
+        color="primary"
+        size="sm"
+        onPress={() => {
+          setSelectedPropertyId(property.property_id);
+          setIsTypeModalOpen(true);
+        }}
+      >
+        Tạo Loại
+      </Button>
+    );
+  };
+
   const updatedColumns = [
     ...columns,
     {
@@ -124,8 +144,14 @@ const GetAllProperties = () => {
           Thêm Mới +
         </Button>
       </div>
-      {isLoading && <div>Loading...</div>}
-      {error && <div>Error loading properties</div>}
+
+      {isLoading && (
+        <div className="text-center text-gray-500">Đang tải...</div>
+      )}
+      {error && (
+        <div className="text-center text-red-500">Lỗi khi tải dữ liệu</div>
+      )}
+
       {selectedProperty ? (
         <PropertyDetail
           property={selectedProperty}
@@ -135,40 +161,33 @@ const GetAllProperties = () => {
         />
       ) : (
         <>
-          <div>
-            <Table aria-label="Bảng danh sách bất động sản">
+          <div className="overflow-x-auto">
+            <Table
+              aria-label="Bảng danh sách bất động sản"
+              className="min-w-full"
+            >
               <TableHeader>
                 {updatedColumns.map((column) => (
-                  <TableColumn key={column.key}>{column.label}</TableColumn>
+                  <TableColumn
+                    key={column.key}
+                    className="bg-gray-50 font-semibold text-gray-700"
+                  >
+                    {column.label}
+                  </TableColumn>
                 ))}
               </TableHeader>
               <TableBody>
                 {properties?.map((property: PropertyType) => (
                   <TableRow
                     key={property.property_id}
-                    className="cursor-pointer hover:bg-gray-100"
+                    className="cursor-pointer hover:bg-gray-100 transition-colors duration-200"
                     onClick={() => setSelectedProperty(property)}
                   >
                     {(columnKey) => (
-                      <TableCell>
-                        {columnKey === "typeProperties" ? (
-                          property.type_properties?.length > 0 ? (
-                            property.type_properties[0].typePropertiesName // Assuming typePropertiesName is a string or enum key
-                          ) : (
-                            <Button
-                              color="primary"
-                              size="sm"
-                              onPress={() => {
-                                setSelectedPropertyId(property.property_id);
-                                setIsTypeModalOpen(true);
-                              }}
-                            >
-                              Tạo Loại
-                            </Button>
-                          )
-                        ) : (
-                          getKeyValue(property, columnKey)
-                        )}
+                      <TableCell className="py-3 px-4">
+                        {columnKey === "typeProperties"
+                          ? renderTypePropertiesCell(property)
+                          : getKeyValue(property, columnKey)}
                       </TableCell>
                     )}
                   </TableRow>
@@ -176,6 +195,7 @@ const GetAllProperties = () => {
               </TableBody>
             </Table>
           </div>
+
           <CreateProperty
             isOpen={isCreateModalOpen}
             onClose={() => setIsCreateModalOpen(false)}
@@ -183,14 +203,15 @@ const GetAllProperties = () => {
               refetch();
             }}
           />
+
           {isTypeModalOpen && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white p-6 rounded-lg shadow-lg">
-                <h2 className="text-lg font-bold mb-4">
+              <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                <h2 className="text-lg font-bold mb-4 text-gray-800">
                   Chọn Loại Bất Động Sản
                 </h2>
                 <select
-                  className="w-full p-2 border rounded mb-4"
+                  className="w-full p-3 border rounded-lg mb-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                   value={selectedType}
                   onChange={(e) => setSelectedType(e.target.value)}
                 >
